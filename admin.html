@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ward 47 Admin Dashboard - Nellore Rural</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Nirmala UI", "Gautami", Arial, sans-serif;
+}
+
+body {
+    background: #f1f5f9;
+    color: #1e293b;
+    min-height: 100vh;
+}
+
+/* Header */
+.admin-header {
+    background: #123b68;
+    color: white;
+    padding: 16px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.brand-badge {
+    background: gold;
+    color: #123b68;
+    font-weight: 800;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.brand-text h1 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.brand-text p {
+    font-size: 13px;
+    color: #cbd5e1;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn-lang {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-lang.active {
+    background: gold;
+    color: #123b68;
+    border-color: gold;
+}
+
+.btn-portal {
+    background: #e87820;
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-portal:hover {
+    background: #cf6615;
+}
+
+.btn-logout {
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Login Modal / Barrier */
+.login-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.login-card {
+    background: white;
+    max-width: 440px;
+    width: 100%;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+.login-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.login-card h2 {
+    color: #123b68;
+    margin-bottom: 8px;
+}
+
+.login-card p {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 22px;
+    line-height: 1.5;
+}
+
+.login-field {
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.login-field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 6px;
+}
+
+.login-field input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.login-field input:focus {
+    outline: none;
+    border-color: #123b68;
+    box-shadow: 0 0 0 2px rgba(18, 59, 104, 0.15);
+}
+
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background: #123b68;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-login:hover {
+    background: #0d2847;
+}
+
+.login-error {
+    margin-top: 14px;
+    color: #dc2626;
+    font-size: 13px;
+    background: #fee2e2;
+    padding: 8px;
+    border-radius: 4px;
+    display: none;
+}
+
+.default-key-hint {
+    margin-top: 14px;
+    font-size: 12px;
+    color: #64748b;
+    background: #f8fafc;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px dashed #cbd5e1;
+}
+
+/* Dashboard Content */
+.dashboard-container {
+    max-width: 1360px;
+    margin: 25px auto;
+    padding: 0 20px 40px;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    border-left: 5px solid #123b68;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-card.total { border-left-color: #123b68; }
+.stat-card.received { border-left-color: #0284c7; }
+.stat-card.pending { border-left-color: #f59e0b; }
+.stat-card.in-progress { border-left-color: #8b5cf6; }
+.stat-card.completed { border-left-color: #10b981; }
+.stat-card.rejected { border-left-color: #ef4444; }
+
+.stat-info h3 {
+    font-size: 13px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.stat-info .count {
+    font-size: 32px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.stat-icon {
+    font-size: 32px;
+    opacity: 0.8;
+}
+
+/* Toolbar & Filters */
+.toolbar-card {
+    background: white;
+    padding: 18px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.filters-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.search-input-wrap {
+    position: relative;
+    min-width: 260px;
+    flex: 1;
+    max-width: 380px;
+}
+
+.search-input-wrap input {
+    width: 100%;
+    padding: 10px 14px 10px 36px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.search-input-wrap input:focus {
+    outline: none;
+    border-color: #123b68;
+}
+
+.search-input-wrap::before {
+    content: "🔍";
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    opacity: 0.5;
+}
+
+.filter-select {
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+}
+
+.actions-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-action {
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.btn-refresh {
+    background: #0284c7;
+    color: white;
+}
+
+.btn-export {
+    background: #10b981;
+    color: white;
+}
+
+.btn-action:hover {
+    opacity: 0.9;
+}
+
+/* Complaints Table Card */
+.table-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    overflow: hidden;
+}
+
+.table-header-title {
+    padding: 18px 24px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.table-header-title h2 {
+    font-size: 17px;
+    color: #123b68;
+    font-weight: 700;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+th {
+    background: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+    padding: 14px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: top;
+}
+
+tr:hover td {
+    background: #f8fafc;
+}
+
+.badge-id {
+    font-family: monospace;
+    font-weight: 700;
+    background: #e2e8f0;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #0f172a;
+    display: inline-block;
+}
+
+.citizen-info .name {
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 3px;
+}
+
+.citizen-info .mobile {
+    font-size: 13px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.btn-contact {
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-call { background: #e0f2fe; color: #0369a1; }
+.btn-wa { background: #dcfce7; color: #15803d; }
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.status-Received { background: #e0f2fe; color: #0369a1; }
+.status-Pending { background: #fef3c7; color: #b45309; }
+.status-InProgress, .status-In-Progress { background: #ede9fe; color: #6d28d9; }
+.status-Completed { background: #dcfce7; color: #15803d; }
+.status-Rejected { background: #fee2e2; color: #b91c1c; }
+
+.status-changer {
+    padding: 6px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #f8fafc;
+    cursor: pointer;
+}
+
+.thumb-img {
+    width: 54px;
+    height: 54px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.thumb-img:hover {
+    transform: scale(1.08);
+}
+
+.no-photo {
+    font-size: 12px;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: #64748b;
+}
+
+.empty-state .icon {
+    font-size: 40px;
+    margin-bottom: 8px;
+}
+
+/* Lightbox Modal */
+.image-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 2000;
+}
+
+.image-modal img {
+    max-width: 90%;
+    max-height: 85vh;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 32px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Toast */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    display: none;
+    z-index: 3000;
+}
+
+.toast.success { background: #10b981; }
+.toast.error { background: #ef4444; }
+
+@media(max-width: 768px) {
+    .admin-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .header-actions {
+        justify-content: space-between;
+    }
+    .toolbar-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .filters-left {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-input-wrap {
+        max-width: 100%;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- Login Overlay -->
+<div id="loginModal" class="login-overlay">
+    <div class="login-card">
+        <div class="login-icon">🔐</div>
+        <h2 id="loginTitle" data-i18n="login_title">Ward 47 Admin Portal</h2>
+        <p id="loginSubtitle" data-i18n="login_subtitle">Enter your Ward Administration Secret Password to manage citizen grievances and public services.</p>
+        
+        <!-- Standard Login Form -->
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="login-field">
+                <label for="adminKeyInput" data-i18n="login_key_label">Admin Secret Password</label>
+                <input type="password" id="adminKeyInput" placeholder="Enter your password" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn-login" data-i18n="login_btn">Sign In to Dashboard</button>
+            <div id="loginError" class="login-error"></div>
+        </form>
+
+        <!-- First-Time Password Setup Form (Only shown if no password exists yet) -->
+        <form id="setupForm" style="display:none;" onsubmit="handleInitialSetup(event)">
+            <div class="login-field">
+                <label for="setupPwdInput">Create Admin Password</label>
+                <input type="password" id="setupPwdInput" minlength="4" placeholder="Enter new password (min 4 chars)" required autocomplete="new-password">
+            </div>
+            <div class="login-field">
+                <label for="setupConfirmInput">Confirm Admin Password</label>
+                <input type="password" id="setupConfirmInput" minlength="4" placeholder="Re-enter password" required autocomplete="new-password">
+            </div>
+            <button type="submit" class="btn-login">Save Password & Sign In</button>
+            <div id="setupError" class="login-error"></div>
+        </form>
+    </div>
+</div>
+
+<!-- Change Password Modal -->
+<div id="passwordModal" class="login-overlay" style="display:none;">
+    <div class="login-card">
+        <div class="login-icon">🔑</div>
+        <h2 data-i18n="pwd_modal_title">Change Admin Password</h2>
+        <p data-i18n="pwd_modal_desc">Set a new secret password for your Admin Dashboard.</p>
+        <form onsubmit="handleSavePassword(event)">
+            <div class="login-field">
+                <label for="currentPwdInput" data-i18n="lbl_current_pwd">Current Password</label>
+                <input type="password" id="currentPwdInput" required placeholder="Enter current password">
+            </div>
+            <div class="login-field">
+                <label for="newPwdInput" data-i18n="lbl_new_pwd">New Password</label>
+                <input type="password" id="newPwdInput" required minlength="4" placeholder="Enter new password (min 4 chars)">
+            </div>
+            <div class="login-field">
+                <label for="confirmPwdInput" data-i18n="lbl_confirm_pwd">Confirm New Password</label>
+                <input type="password" id="confirmPwdInput" required minlength="4" placeholder="Re-enter new password">
+            </div>
+            <div id="pwdError" class="login-error" style="display:none; margin-bottom:14px;"></div>
+            <div style="display:flex; gap:10px;">
+                <button type="button" class="btn-portal" style="flex:1; justify-content:center; background:#64748b;" onclick="closePasswordModal()" data-i18n="btn_cancel">Cancel</button>
+                <button type="submit" class="btn-login" style="flex:1;" data-i18n="btn_save_pwd">Save Password</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Main Admin App -->
+<div id="adminApp" style="display:none;">
+
+    <!-- Top Admin Bar -->
+    <header class="admin-header">
+        <div class="brand">
+            <span class="brand-badge">AP GOVT - WARD 47</span>
+            <div class="brand-text">
+                <h1 data-i18n="admin_heading">Nellore Rural - Grievance Management Dashboard</h1>
+                <p data-i18n="admin_subheading">47th Municipal Corporation Ward Administration</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <div style="display:inline-flex; gap:6px;">
+                <button type="button" class="btn-lang" id="btn-admin-en" onclick="setAdminLang('en')">English</button>
+                <button type="button" class="btn-lang" id="btn-admin-te" onclick="setAdminLang('te')">తెలుగు</button>
+            </div>
+            <button type="button" class="btn-portal" style="background:#0284c7;" onclick="openPasswordModal()" data-i18n="btn_change_pwd">🔑 Change Password</button>
+            <a href="./index.html" class="btn-portal" data-i18n="btn_citizen_portal">🌐 Citizen Portal</a>
+            <button class="btn-logout" onclick="handleLogout()" data-i18n="btn_logout">Logout</button>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <!-- Server Status Alert Banner -->
+        <div id="serverStatusBanner" style="display:none; position:relative; margin-bottom:18px; padding:14px 40px 14px 18px; border-radius:8px; font-size:14px; background:#fffbeb; color:#92400e; border:1px solid #fcd34d; line-height:1.5;">
+            <button type="button" onclick="document.getElementById('serverStatusBanner').style.display='none'" title="Dismiss" style="position:absolute; right:12px; top:12px; border:none; background:transparent; font-size:18px; cursor:pointer; color:#92400e; font-weight:bold;">&times;</button>
+            ⚠️ <strong>Local Preview Mode (Node.js Server Offline)</strong>: You are viewing this page directly. Complaints are being saved into your browser database. To enable live Excel file recording, start the server using <strong><code>node server.js</code></strong> or <strong><code>start-server.bat</code></strong>.
+        </div>
+
+        <!-- Stat Counter Cards -->
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <div class="stat-info">
+                    <h3 data-i18n="stat_total">Total Complaints</h3>
+                    <div class="count" id="countTotal">0</div>
+                </div>
+                <div class="stat-icon">📋</div>
+            </div>
+            <div class="stat-card received">
+                <div class="stat-info">
+                    <h3 data-i18n="stat_received">Received (New)</h3>
+                    <div class="count" id="countReceived">0</div>
+                </div>
+                <div class="stat-icon">📥</div>
+            </div>
+            <div class="stat-card pending">
+                <div class="stat-info">
+                    <h3 data-i18n="stat_pending">Pending</h3>
+                    <div class="count" id="countPending">0</div>
+                </div>
+                <div class="stat-icon">⏳</div>
+            </div>
+            <div class="stat-card in-progress">
+                <div class="stat-info">
+                    <h3 data-i18n="stat_inprogress">In Progress</h3>
+                    <div class="count" id="countInProgress">0</div>
+                </div>
+                <div class="stat-icon">⚙️</div>
+            </div>
+            <div class="stat-card completed">
+                <div class="stat-info">
+                    <h3 data-i18n="stat_completed">Completed</h3>
+                    <div class="count" id="countCompleted">0</div>
+                </div>
+                <div class="stat-icon">✅</div>
+            </div>
+            <div class="stat-card rejected">
+                <div class="stat-info">
+                    <h3 data-i18n="stat_rejected">Rejected</h3>
+                    <div class="count" id="countRejected">0</div>
+                </div>
+                <div class="stat-icon">❌</div>
+            </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="toolbar-card">
+            <div class="filters-left">
+                <div class="search-input-wrap">
+                    <input type="text" id="filterSearch" placeholder="Search by name, mobile, area, ID..." oninput="applyFilters()" data-i18n-ph="search_placeholder">
+                </div>
+                <select id="filterStatus" class="filter-select" onchange="applyFilters()">
+                    <option value="" data-i18n="opt_all_statuses">All Statuses</option>
+                    <option value="Received">Received</option>
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+                <select id="filterProblemType" class="filter-select" onchange="applyFilters()">
+                    <option value="" data-i18n="opt_all_problems">All Problem Types</option>
+                    <option value="Road Damage">Road Damage</option>
+                    <option value="Drainage Problem">Drainage Problem</option>
+                    <option value="Water Supply">Water Supply Problem</option>
+                    <option value="Garbage Collection">Garbage Collection</option>
+                    <option value="Street Light">Street Light Problem</option>
+                    <option value="Sanitation">Sanitation Problem</option>
+                    <option value="Mosquito Control">Mosquito Control</option>
+                    <option value="Public Park">Public Park Problem</option>
+                    <option value="Government School">Government School Problem</option>
+                    <option value="Welfare Scheme">Welfare Scheme Problem</option>
+                    <option value="Other">Other Problem</option>
+                </select>
+            </div>
+            <div class="actions-right">
+                <button class="btn-action btn-refresh" onclick="loadComplaints()" data-i18n="btn_refresh">🔄 Refresh</button>
+                <button class="btn-action btn-export" onclick="exportExcel()" data-i18n="btn_export">📊 Export Excel</button>
+            </div>
+        </div>
+
+        <!-- Complaints Table Card -->
+        <div class="table-card">
+            <div class="table-header-title">
+                <h2 data-i18n="table_title">Citizen Complaints & Problem Reports</h2>
+                <span id="filteredCountNotice" style="font-size:13px; color:#64748b;"></span>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-i18n="th_id">ID & Date</th>
+                            <th data-i18n="th_citizen">Citizen Details</th>
+                            <th data-i18n="th_location">Location</th>
+                            <th data-i18n="th_problem">Problem & Details</th>
+                            <th data-i18n="th_photo">Photo</th>
+                            <th data-i18n="th_status">Current Status</th>
+                            <th data-i18n="th_action">Update Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="complaintsTableBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="emptyState" class="empty-state" style="display:none;">
+                <div class="icon">📂</div>
+                <p data-i18n="empty_msg">No complaints matching your current filters.</p>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- Image Lightbox Modal -->
+<div id="imageModal" class="image-modal" onclick="closeImageModal()">
+    <span class="close-modal">&times;</span>
+    <img id="modalImg" src="" alt="Complaint Photo Preview">
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast"></div>
+
+<script>
+// ==========================================
+// ADMIN DASHBOARD LOCALIZATION (EN & TE)
+// ==========================================
+const adminTranslations = {
+    en: {
+        login_title: "Ward 47 Admin Portal",
+        login_subtitle: "Enter your Ward Administration Secret Password to access the dashboard.",
+        login_key_label: "Admin Secret Password",
+        login_btn: "Sign In to Dashboard",
+        admin_heading: "Nellore Rural - Grievance Management Dashboard",
+        admin_subheading: "47th Municipal Corporation Ward Administration",
+        btn_citizen_portal: "🌐 Citizen Portal",
+        btn_logout: "Logout",
+        stat_total: "Total Complaints",
+        stat_received: "Received (New)",
+        stat_pending: "Pending",
+        stat_inprogress: "In Progress",
+        stat_completed: "Completed",
+        stat_rejected: "Rejected",
+        search_placeholder: "Search by name, mobile, area, ID...",
+        opt_all_statuses: "All Statuses",
+        opt_all_problems: "All Problem Types",
+        btn_refresh: "🔄 Refresh",
+        btn_export: "📊 Export Excel",
+        table_title: "Citizen Complaints & Problem Reports",
+        th_id: "ID & Date",
+        th_citizen: "Citizen Details",
+        th_location: "Location",
+        th_problem: "Problem & Details",
+        th_photo: "Photo",
+        th_status: "Current Status",
+        th_action: "Update Status",
+        empty_msg: "No complaints matching your current filters.",
+        showing_filtered: "Showing {count} of {total} records",
+        call: "📞 Call",
+        wa: "💬 WhatsApp",
+        toast_status_updated: "Status updated for complaint ",
+        toast_auth_err: "Invalid Admin Key. Please check and try again.",
+        toast_load_err: "Could not load complaints from server.",
+        btn_change_pwd: "🔑 Change Password",
+        pwd_modal_title: "Change Admin Password",
+        pwd_modal_desc: "Set a new secret password for your Admin Dashboard.",
+        lbl_current_pwd: "Current Password",
+        lbl_new_pwd: "New Password",
+        lbl_confirm_pwd: "Confirm New Password",
+        btn_save_pwd: "Save Password",
+        btn_cancel: "Cancel"
+    },
+    te: {
+        login_title: "వార్డు 47 అడ్మిన్ పోర్టల్",
+        login_subtitle: "పౌరుల సమస్యలు మరియు వార్డు సేవలను నిర్వహించడానికి అడ్మిన్ పాస్‌వర్డ్ నమోదు చేయండి.",
+        login_key_label: "అడ్మిన్ రహస్య పాస్‌వర్డ్",
+        login_btn: "డ్యాష్‌బోర్డ్‌లోకి ప్రవేశించండి",
+        admin_heading: "నెల్లూరు రూరల్ - ప్రజా సమస్యల నిర్వహణ వేదిక",
+        admin_subheading: "47వ మున్సిపల్ కార్పొరేషన్ వార్డు పాలన",
+        btn_citizen_portal: "🌐 పౌర పోర్టల్",
+        btn_logout: "లాగౌట్",
+        stat_total: "మొత్తం ఫిర్యాదులు",
+        stat_received: "కొత్తగా వచ్చినవి",
+        stat_pending: "పెండింగ్‌లో ఉన్నవి",
+        stat_inprogress: "పరిష్కారంలో ఉన్నవి",
+        stat_completed: "పరిష్కరించబడినవి",
+        stat_rejected: "తిరస్కరించబడినవి",
+        search_placeholder: "పేరు, ఫోన్, ప్రాంతం లేదా ID ద్వారా శోధించండి...",
+        opt_all_statuses: "అన్ని రకాల స్థితిగతులు",
+        opt_all_problems: "అన్ని రకాల సమస్యలు",
+        btn_refresh: "🔄 రీఫ్రెష్",
+        btn_export: "📊 ఎక్సెల్ ఫైల్ డౌన్‌లోడ్",
+        table_title: "పౌర ఫిర్యాదులు & సమస్యల జాబితా",
+        th_id: "ఐడీ & తేదీ",
+        th_citizen: "పౌరుని వివరాలు",
+        th_location: "ప్రాంతం / వీధి",
+        th_problem: "సమస్య & వివరణ",
+        th_photo: "ఫోటో",
+        th_status: "ప్రస్తుత స్థితి",
+        th_action: "స్థితిని మార్చండి",
+        empty_msg: "ఎలాంటి ఫిర్యాదులు లభించలేదు.",
+        showing_filtered: "మొత్తం {total} లో {count} రికార్డులు చూపిస్తున్నాము",
+        call: "📞 కాల్",
+        wa: "💬 వాట్సాప్",
+        toast_status_updated: "ఫిర్యాదు స్థితి నవీకరించబడింది: ",
+        toast_auth_err: "అడ్మిన్ కీ తప్పుగా ఉంది. దయచేసి మళ్లీ ప్రయత్నించండి.",
+        toast_load_err: "సర్వర్ నుండి ఫిర్యాదులను లోడ్ చేయడం సాధ్యం కాలేదు.",
+        btn_change_pwd: "🔑 పాస్‌వర్డ్ మార్చుకోండి",
+        pwd_modal_title: "అడ్మిన్ పాస్‌వర్డ్ మార్పు",
+        pwd_modal_desc: "మీ అడ్మిన్ డ్యాష్‌బోర్డ్ కోసం కొత్త రహస్య పాస్‌వర్డ్‌ను సెట్ చేయండి.",
+        lbl_current_pwd: "ప్రస్తుత పాస్‌వర్డ్",
+        lbl_new_pwd: "కొత్త పాస్‌వర్డ్",
+        lbl_confirm_pwd: "కొత్త పాస్‌వర్డ్ నిర్ధారణ",
+        btn_save_pwd: "పాస్‌వర్డ్ భద్రపరచండి",
+        btn_cancel: "రద్దు చేయి"
+    }
+};
+
+let adminLang = localStorage.getItem("ward47_admin_lang") || "en";
+let allComplaints = [];
+
+function setAdminLang(lang) {
+    adminLang = lang;
+    localStorage.setItem("ward47_admin_lang", lang);
+    const dict = adminTranslations[lang];
+
+    const btnEn = document.getElementById("btn-admin-en");
+    const btnTe = document.getElementById("btn-admin-te");
+    if (btnEn && btnTe) {
+        if (lang === "te") {
+            btnTe.classList.add("active");
+            btnEn.classList.remove("active");
+        } else {
+            btnEn.classList.add("active");
+            btnTe.classList.remove("active");
+        }
+    }
+
+    document.querySelectorAll("[data-i18n]").forEach(elem => {
+        const key = elem.getAttribute("data-i18n");
+        if (dict[key]) elem.textContent = dict[key];
+    });
+
+    document.querySelectorAll("[data-i18n-ph]").forEach(elem => {
+        const key = elem.getAttribute("data-i18n-ph");
+        if (dict[key]) elem.placeholder = dict[key];
+    });
+
+    applyFilters();
+}
+
+// ==========================================
+// AUTHENTICATION & SESSION
+// ==========================================
+function getAdminKey() {
+    return sessionStorage.getItem("ward47_admin_key") || "";
+}
+
+let isOfflineMode = false;
+
+// Sample complaints for local offline preview when server.js is not yet running
+const samplePreviewComplaints = [
+    {
+        complaintId: "W47-00001",
+        submittedAt: "09/11/2026, 11:30:15 AM",
+        name: "K. Venkateswarlu",
+        mobile: "9440500357",
+        area: "Gouthami Nagar",
+        street: "3rd Street, Near Water Tank",
+        problemType: "Road Damage",
+        description: "Heavy potholes formed after rains causing danger to two-wheelers and school autos.",
+        photoFilename: "",
+        status: "Received"
+    },
+    {
+        complaintId: "W47-00002",
+        submittedAt: "09/11/2026, 12:15:42 PM",
+        name: "P. Lakshmi Devi",
+        mobile: "7981487711",
+        area: "Sanjay Gandhi Nagar",
+        street: "2nd Cross, Lane 4",
+        problemType: "Street Light",
+        description: "Three street lights not working for past one week. Area is dark at night.",
+        photoFilename: "",
+        status: "In Progress"
+    },
+    {
+        complaintId: "W47-00003",
+        submittedAt: "09/11/2026, 01:45:10 PM",
+        name: "Sk. Rahim",
+        mobile: "9848022338",
+        area: "Vengalrao Nagar",
+        street: "C Block 60ft Road",
+        problemType: "Drainage Problem",
+        description: "Underground drainage overflow near the corner junction. Needs urgent jetting machine cleaning.",
+        photoFilename: "",
+        status: "Pending"
+    },
+    {
+        complaintId: "W47-00004",
+        submittedAt: "09/11/2026, 02:20:05 PM",
+        name: "M. Subrahmanyam",
+        mobile: "9988776655",
+        area: "Bank Colony",
+        street: "Main Road",
+        problemType: "Garbage Collection",
+        description: "Sanitation vehicle missed daily collection in our lane for two consecutive days.",
+        photoFilename: "",
+        status: "Completed"
+    }
+];
+
+const API_BASE = (window.location.port === "5500" || window.location.protocol === "file:")
+    ? "http://localhost:3000"
+    : "";
+
+function getValidAdminKey() {
+    return localStorage.getItem("ward47_custom_admin_key") || "";
+}
+
+function checkLoginView() {
+    const key = getValidAdminKey();
+    const loginForm = document.getElementById("loginForm");
+    const setupForm = document.getElementById("setupForm");
+    const loginTitle = document.getElementById("loginTitle");
+    const loginSubtitle = document.getElementById("loginSubtitle");
+
+    if (!key) {
+        // First time setup - no password has been created yet
+        if (loginForm) loginForm.style.display = "none";
+        if (setupForm) setupForm.style.display = "block";
+        if (loginTitle) loginTitle.textContent = adminLang === "te" ? "అడ్మిన్ పాస్‌వర్డ్ సెటప్" : "Admin Password Setup";
+        if (loginSubtitle) loginSubtitle.textContent = adminLang === "te" 
+            ? "పోర్టల్ రక్షణ కోసం మీ వ్యక్తిగత అడ్మిన్ పాస్‌వర్డ్‌ను సెట్ చేయండి."
+            : "First-time setup: Create your personal secret Admin Password to secure the dashboard.";
+    } else {
+        if (loginForm) loginForm.style.display = "block";
+        if (setupForm) setupForm.style.display = "none";
+        if (loginTitle) loginTitle.textContent = adminTranslations[adminLang].login_title;
+        if (loginSubtitle) loginSubtitle.textContent = adminTranslations[adminLang].login_subtitle;
+    }
+}
+
+async function handleInitialSetup(e) {
+    e.preventDefault();
+    const newPwd = document.getElementById("setupPwdInput").value.trim();
+    const confirmPwd = document.getElementById("setupConfirmInput").value.trim();
+    const errorElem = document.getElementById("setupError");
+    errorElem.style.display = "none";
+
+    if (newPwd.length < 4) {
+        errorElem.textContent = adminLang === "te" ? "పాస్‌వర్డ్ కనీసం 4 అక్షరాలు ఉండాలి." : "Password must be at least 4 characters.";
+        errorElem.style.display = "block";
+        return;
+    }
+
+    if (newPwd !== confirmPwd) {
+        errorElem.textContent = adminLang === "te" ? "పాస్‌వర్డ్‌లు సరిపోలడం లేదు." : "Passwords do not match.";
+        errorElem.style.display = "block";
+        return;
+    }
+
+    // Sync to server if reachable
+    try {
+        await fetch(`${API_BASE}/api/admin/change-password`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "x-admin-key": newPwd },
+            body: JSON.stringify({ newPassword: newPwd })
+        });
+    } catch (_) {}
+
+    localStorage.setItem("ward47_custom_admin_key", newPwd);
+    sessionStorage.setItem("ward47_admin_key", newPwd);
+    isOfflineMode = true;
+    document.getElementById("serverStatusBanner").style.display = "block";
+    document.getElementById("loginModal").style.display = "none";
+    document.getElementById("adminApp").style.display = "block";
+    allComplaints = getOfflineComplaints();
+    updateStats();
+    applyFilters();
+    showToast(adminLang === "te" ? "అడ్మిన్ పాస్‌వర్డ్ సృష్టించబడింది!" : "Admin password created and saved!", "success");
+}
+
+function openPasswordModal() {
+    document.getElementById("currentPwdInput").value = "";
+    document.getElementById("newPwdInput").value = "";
+    document.getElementById("confirmPwdInput").value = "";
+    document.getElementById("pwdError").style.display = "none";
+    document.getElementById("passwordModal").style.display = "flex";
+}
+
+function closePasswordModal() {
+    document.getElementById("passwordModal").style.display = "none";
+}
+
+async function handleSavePassword(e) {
+    e.preventDefault();
+    const current = document.getElementById("currentPwdInput").value.trim();
+    const newPwd = document.getElementById("newPwdInput").value.trim();
+    const confirmPwd = document.getElementById("confirmPwdInput").value.trim();
+    const errorElem = document.getElementById("pwdError");
+    errorElem.style.display = "none";
+
+    const validKey = getValidAdminKey();
+    if (validKey && current !== validKey) {
+        errorElem.textContent = adminLang === "te" ? "ప్రస్తుత పాస్‌వర్డ్ తప్పుగా ఉంది." : "Current password is incorrect.";
+        errorElem.style.display = "block";
+        return;
+    }
+
+    if (newPwd.length < 4) {
+        errorElem.textContent = adminLang === "te" ? "పాస్‌వర్డ్ కనీసం 4 అక్షరాలు ఉండాలి." : "New password must be at least 4 characters.";
+        errorElem.style.display = "block";
+        return;
+    }
+
+    if (newPwd !== confirmPwd) {
+        errorElem.textContent = adminLang === "te" ? "కొత్త పాస్‌వర్డ్‌లు సరిపోలడం లేదు." : "New passwords do not match.";
+        errorElem.style.display = "block";
+        return;
+    }
+
+    // Sync to backend server
+    try {
+        await fetch(`${API_BASE}/api/admin/change-password`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-admin-key": current || validKey
+            },
+            body: JSON.stringify({ newPassword: newPwd })
+        });
+    } catch (_) {}
+
+    localStorage.setItem("ward47_custom_admin_key", newPwd);
+    sessionStorage.setItem("ward47_admin_key", newPwd);
+    closePasswordModal();
+    showToast(adminLang === "te" ? "పాస్‌వర్డ్ విజయవంతంగా మార్చబడింది!" : "Admin password updated successfully!", "success");
+}
+
+function getOfflineComplaints() {
+    const portalData = JSON.parse(localStorage.getItem("ward47_portal_complaints") || "[]");
+    if (portalData && portalData.length > 0) return portalData;
+    return samplePreviewComplaints;
+}
+
+async function handleLogin(e) {
+    e.preventDefault();
+    const key = document.getElementById("adminKeyInput").value.trim();
+    const errorElem = document.getElementById("loginError");
+    errorElem.style.display = "none";
+
+    const localSavedKey = getValidAdminKey();
+
+    // 1. Try to verify with server first
+    let serverOk = false;
+    try {
+        const res = await fetch(`${API_BASE}/api/admin/verify`, {
+            headers: { "x-admin-key": key }
+        });
+        if (res.ok) {
+            serverOk = true;
+        } else if (res.status === 401 && localSavedKey && key === localSavedKey) {
+            // Local password was updated; sync it to the server
+            try {
+                const syncRes = await fetch(`${API_BASE}/api/admin/change-password`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "x-admin-key": key },
+                    body: JSON.stringify({ newPassword: key })
+                });
+                if (syncRes.ok) serverOk = true;
+            } catch (_) {}
+        }
+    } catch (_) {
+        serverOk = false;
+    }
+
+    if (serverOk) {
+        sessionStorage.setItem("ward47_admin_key", key);
+        localStorage.setItem("ward47_custom_admin_key", key);
+        isOfflineMode = false;
+        document.getElementById("serverStatusBanner").style.display = "none";
+        document.getElementById("loginModal").style.display = "none";
+        document.getElementById("adminApp").style.display = "block";
+        loadComplaints();
+        return;
+    }
+
+    // 2. Offline / Local verification:
+    if (localSavedKey && key === localSavedKey) {
+        sessionStorage.setItem("ward47_admin_key", key);
+        isOfflineMode = true;
+        document.getElementById("serverStatusBanner").style.display = "block";
+        document.getElementById("loginModal").style.display = "none";
+        document.getElementById("adminApp").style.display = "block";
+        allComplaints = getOfflineComplaints();
+        updateStats();
+        applyFilters();
+        return;
+    }
+
+    // 3. Fallback: if no password was ever set yet, set this one!
+    if (!localSavedKey) {
+        localStorage.setItem("ward47_custom_admin_key", key);
+        sessionStorage.setItem("ward47_admin_key", key);
+        document.getElementById("loginModal").style.display = "none";
+        document.getElementById("adminApp").style.display = "block";
+        allComplaints = getOfflineComplaints();
+        updateStats();
+        applyFilters();
+        return;
+    }
+
+    // 4. Neither matched
+    errorElem.textContent = adminLang === "te"
+        ? "పాస్‌వర్డ్ తప్పుగా ఉంది. దయచేసి సరైన పాస్‌వర్డ్ నమోదు చేయండి."
+        : "Invalid password. Please enter the correct password.";
+    errorElem.style.display = "block";
+}
+
+function handleLogout() {
+    sessionStorage.removeItem("ward47_admin_key");
+    document.getElementById("adminApp").style.display = "none";
+    document.getElementById("loginModal").style.display = "flex";
+    document.getElementById("adminKeyInput").value = "";
+    checkLoginView();
+}
+
+// ==========================================
+// LOAD DATA & STATS
+// ==========================================
+async function loadComplaints() {
+    if (isOfflineMode) {
+        allComplaints = getOfflineComplaints();
+        updateStats();
+        applyFilters();
+        showToast("Loaded complaints from browser database.", "success");
+        return;
+    }
+
+    const key = getAdminKey();
+    if (!key) return;
+
+    try {
+        const res = await fetch(`${API_BASE}/api/admin/complaints`, {
+            headers: { "x-admin-key": key }
+        });
+        if (res.status === 401) {
+            handleLogout();
+            return;
+        }
+        if (!res.ok) throw new Error("Fetch failed");
+        
+        const data = await res.json();
+        allComplaints = data.complaints || [];
+        updateStats();
+        applyFilters();
+    } catch (err) {
+        // Fallback to offline preview data if server went down
+        isOfflineMode = true;
+        document.getElementById("serverStatusBanner").style.display = "block";
+        allComplaints = samplePreviewComplaints;
+        updateStats();
+        applyFilters();
+        showToast("Server offline. Displaying local preview.", "error");
+    }
+}
+
+function updateStats() {
+    let counts = { Total: allComplaints.length, Received: 0, Pending: 0, "In Progress": 0, Completed: 0, Rejected: 0 };
+    allComplaints.forEach(c => {
+        const s = c.status || "Received";
+        if (counts[s] !== undefined) counts[s]++;
+    });
+
+    document.getElementById("countTotal").textContent = counts.Total;
+    document.getElementById("countReceived").textContent = counts.Received;
+    document.getElementById("countPending").textContent = counts.Pending;
+    document.getElementById("countInProgress").textContent = counts["In Progress"];
+    document.getElementById("countCompleted").textContent = counts.Completed;
+    document.getElementById("countRejected").textContent = counts.Rejected;
+}
+
+// ==========================================
+// FILTERING & RENDERING
+// ==========================================
+function applyFilters() {
+    const q = (document.getElementById("filterSearch").value || "").toLowerCase().trim();
+    const status = document.getElementById("filterStatus").value;
+    const problemType = document.getElementById("filterProblemType").value;
+
+    const filtered = allComplaints.filter(c => {
+        if (status && (c.status || "Received") !== status) return false;
+        if (problemType && !c.problemType.toLowerCase().includes(problemType.toLowerCase())) return false;
+        if (q) {
+            const haystack = `${c.complaintId} ${c.name} ${c.mobile} ${c.area} ${c.street} ${c.description} ${c.problemType}`.toLowerCase();
+            if (!haystack.includes(q)) return false;
+        }
+        return true;
+    });
+
+    renderTable(filtered);
+
+    const notice = document.getElementById("filteredCountNotice");
+    const dict = adminTranslations[adminLang];
+    notice.textContent = dict.showing_filtered.replace("{count}", filtered.length).replace("{total}", allComplaints.length);
+}
+
+function renderTable(complaints) {
+    const tbody = document.getElementById("complaintsTableBody");
+    const emptyState = document.getElementById("emptyState");
+    const dict = adminTranslations[adminLang];
+
+    if (!complaints.length) {
+        tbody.innerHTML = "";
+        emptyState.style.display = "block";
+        return;
+    }
+
+    emptyState.style.display = "none";
+    tbody.innerHTML = complaints.map(c => {
+        const cleanMobile = (c.mobile || "").replace(/\D/g, "");
+        const waUrl = `https://wa.me/91${cleanMobile}?text=${encodeURIComponent(`Namaste ${c.name}, regarding your Ward 47 complaint (${c.complaintId}): `)}`;
+        const statusClass = (c.status || "Received").replace(/\s+/g, "");
+
+        return `
+        <tr>
+            <td>
+                <span class="badge-id">${escapeHtml(c.complaintId)}</span>
+                <div style="font-size:12px; color:#64748b; margin-top:5px;">${escapeHtml(c.submittedAt || "")}</div>
+            </td>
+            <td>
+                <div class="citizen-info">
+                    <div class="name">${escapeHtml(c.name)}</div>
+                    <div class="mobile">
+                        <span>📱 ${escapeHtml(c.mobile)}</span>
+                        <a href="tel:${cleanMobile}" class="btn-contact btn-call">${dict.call}</a>
+                        <a href="${waUrl}" target="_blank" rel="noopener" class="btn-contact btn-wa">${dict.wa}</a>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <strong>${escapeHtml(c.area)}</strong>
+                <div style="font-size:12px; color:#64748b; margin-top:3px;">${escapeHtml(c.street)}</div>
+            </td>
+            <td style="max-width:320px;">
+                <strong style="color:#123b68;">${escapeHtml(c.problemType)}</strong>
+                <div style="font-size:13px; color:#334155; margin-top:4px; line-height:1.4;">${escapeHtml(c.description)}</div>
+            </td>
+            <td>
+                ${c.photoFilename ? `
+                    <img src="${API_BASE}/uploads/${encodeURIComponent(c.photoFilename)}" 
+                         class="thumb-img" 
+                         alt="Problem Photo"
+                         onclick="openImageModal('${API_BASE}/uploads/${encodeURIComponent(c.photoFilename)}')">
+                ` : `<span class="no-photo">No photo</span>`}
+            </td>
+            <td>
+                <span class="status-badge status-${statusClass}">${escapeHtml(c.status || "Received")}</span>
+            </td>
+            <td>
+                <select class="status-changer" onchange="changeStatus('${c.complaintId}', this.value)">
+                    <option value="Received" ${c.status === "Received" ? "selected" : ""}>Received</option>
+                    <option value="Pending" ${c.status === "Pending" ? "selected" : ""}>Pending</option>
+                    <option value="In Progress" ${c.status === "In Progress" ? "selected" : ""}>In Progress</option>
+                    <option value="Completed" ${c.status === "Completed" ? "selected" : ""}>Completed</option>
+                    <option value="Rejected" ${c.status === "Rejected" ? "selected" : ""}>Rejected</option>
+                </select>
+            </td>
+        </tr>
+        `;
+    }).join("");
+}
+
+// ==========================================
+// STATUS UPDATE
+// ==========================================
+async function changeStatus(complaintId, newStatus) {
+    if (isOfflineMode) {
+        const item = allComplaints.find(c => c.complaintId === complaintId);
+        if (item) {
+            item.status = newStatus;
+            localStorage.setItem("ward47_portal_complaints", JSON.stringify(allComplaints));
+        }
+        updateStats();
+        applyFilters();
+        showToast("Status updated: " + complaintId + " ➔ " + newStatus, "success");
+        return;
+    }
+
+    const key = getAdminKey();
+    try {
+        const res = await fetch(`${API_BASE}/api/admin/complaints/${encodeURIComponent(complaintId)}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "x-admin-key": key
+            },
+            body: JSON.stringify({ status: newStatus })
+        });
+        if (!res.ok) throw new Error("Update failed");
+
+        // Update local object
+        const item = allComplaints.find(c => c.complaintId === complaintId);
+        if (item) item.status = newStatus;
+        updateStats();
+        applyFilters();
+
+        showToast(adminTranslations[adminLang].toast_status_updated + complaintId + " ➔ " + newStatus, "success");
+    } catch (err) {
+        showToast("Could not update status on server.", "error");
+        loadComplaints();
+    }
+}
+
+// ==========================================
+// EXCEL EXPORT
+// ==========================================
+async function exportExcel() {
+    if (isOfflineMode) {
+        // Generate CSV file locally
+        let csv = "Complaint ID,Submitted At,Citizen Name,Mobile Number,Area,Street,Problem Type,Description,Status\n";
+        allComplaints.forEach(c => {
+            const row = [c.complaintId, c.submittedAt, c.name, c.mobile, c.area, c.street, c.problemType, c.description, c.status]
+                .map(val => `"${String(val || '').replace(/"/g, '""')}"`).join(",");
+            csv += row + "\n";
+        });
+        const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Ward47_Public_Problems_${new Date().toISOString().slice(0,10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        showToast("Exported complaints CSV (Open in Excel)!", "success");
+        return;
+    }
+
+    const key = getAdminKey();
+    try {
+        const res = await fetch(`${API_BASE}/api/admin/export-excel`, {
+            headers: { "x-admin-key": key }
+        });
+        if (!res.ok) throw new Error("Export failed");
+        
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Ward47_Public_Problems_${new Date().toISOString().slice(0,10)}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    } catch (err) {
+        showToast("Export error: No complaints data available to download.", "error");
+    }
+}
+
+// ==========================================
+// LIGHTBOX & TOAST UTILITIES
+// ==========================================
+function openImageModal(src) {
+    document.getElementById("modalImg").src = src;
+    document.getElementById("imageModal").style.display = "flex";
+}
+
+function closeImageModal() {
+    document.getElementById("imageModal").style.display = "none";
+}
+
+function showToast(msg, type = "success") {
+    const toast = document.getElementById("toast");
+    toast.textContent = msg;
+    toast.className = `toast ${type}`;
+    toast.style.display = "block";
+    setTimeout(() => { toast.style.display = "none"; }, 3500);
+}
+
+function escapeHtml(str) {
+    if (!str) return "";
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+// Auto check existing session
+document.addEventListener("DOMContentLoaded", () => {
+    setAdminLang(adminLang);
+    checkLoginView();
+    const existingKey = getAdminKey();
+    const validKey = getValidAdminKey();
+
+    if (existingKey) {
+        if (window.location.protocol === "file:" || isOfflineMode) {
+            if (validKey && existingKey === validKey) {
+                isOfflineMode = true;
+                document.getElementById("serverStatusBanner").style.display = "block";
+                document.getElementById("loginModal").style.display = "none";
+                document.getElementById("adminApp").style.display = "block";
+                allComplaints = getOfflineComplaints();
+                updateStats();
+                applyFilters();
+            } else {
+                sessionStorage.removeItem("ward47_admin_key");
+            }
+            return;
+        }
+
+        fetch(`${API_BASE}/api/admin/verify`, { headers: { "x-admin-key": existingKey } })
+            .then(res => {
+                if (res.ok) {
+                    document.getElementById("loginModal").style.display = "none";
+                    document.getElementById("adminApp").style.display = "block";
+                    loadComplaints();
+                } else {
+                    sessionStorage.removeItem("ward47_admin_key");
+                    checkLoginView();
+                }
+            })
+            .catch(() => {
+                // If offline
+                if (validKey && existingKey === validKey) {
+                    isOfflineMode = true;
+                    document.getElementById("serverStatusBanner").style.display = "block";
+                    document.getElementById("loginModal").style.display = "none";
+                    document.getElementById("adminApp").style.display = "block";
+                    allComplaints = getOfflineComplaints();
+                    updateStats();
+                    applyFilters();
+                } else {
+                    sessionStorage.removeItem("ward47_admin_key");
+                    checkLoginView();
+                }
+            });
+    }
+});
+</script>
+</body>
+</html>

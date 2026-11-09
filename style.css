@@ -1,0 +1,585 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Nirmala UI", "Gautami", Arial, sans-serif;
+}
+
+body {
+    background: white;
+    color: black;
+    line-height: 1.5;
+}
+
+/* Top Header */
+.topbar {
+    background: gold;
+    color: black;
+    padding: 8px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 500;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Language Switcher */
+.lang-switch {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.08);
+    padding: 2px 6px;
+    border-radius: 20px;
+    gap: 4px;
+}
+
+.lang-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: #222;
+    padding: 4px 10px;
+    border-radius: 14px;
+    transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.lang-btn.active {
+    background: #123b68;
+    color: #ffffff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+}
+
+.lang-sep {
+    color: #555;
+    font-weight: normal;
+    font-size: 11px;
+}
+
+.topbar-admin-link {
+    color: #123b68;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 4px 10px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.topbar-admin-link:hover {
+    background: #123b68;
+    color: #fff;
+}
+
+.header {
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 5%;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo img {
+    width: 140px;
+    height: 140px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.logo h1 {
+    color: #c78d00;
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.logo p {
+    color: #333;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.search-box input {
+    padding: 10px 14px;
+    width: 220px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-box input:focus {
+    border-color: #e87820;
+    box-shadow: 0 0 0 2px rgba(232, 120, 32, 0.2);
+}
+
+.search-box button {
+    padding: 10px 18px;
+    background: #e87820;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.search-box button:hover {
+    background: #d16712;
+}
+
+/* Navigation */
+nav {
+    background: gold;
+    padding: 0 5%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+nav ul li a {
+    display: block;
+    padding: 14px 18px;
+    color: black;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+nav ul li a:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+nav ul li.nav-admin-item a {
+    background: #123b68;
+    color: #fff;
+    border-radius: 4px;
+    margin: 6px 0 6px auto;
+    padding: 8px 14px;
+}
+
+nav ul li.nav-admin-item a:hover {
+    background: #0d2847;
+}
+
+/* Hero */
+.hero {
+    min-height: 400px;
+    background:
+    linear-gradient(rgba(0, 35, 75, 0.65),
+                    rgba(0, 35, 75, 0.65)),
+    url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4652SI1fIJbsoV7qZAYXVUvDjd_sGGfqEI2BqVcF143PzDsFu-98EAnXm&s=10");
+    background-size: cover;
+    background-position: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 50px 8%;
+}
+
+.hero h2 {
+    font-size: 38px;
+    margin-bottom: 18px;
+    line-height: 1.3;
+}
+
+.hero p {
+    max-width: 680px;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.hero button {
+    margin-top: 25px;
+    width: fit-content;
+    padding: 14px 28px;
+    background: #e87820;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.hero button:hover {
+    background: #d16712;
+    transform: translateY(-2px);
+}
+
+/* Quick Services */
+.section {
+    padding: 50px 5%;
+}
+
+.section h2 {
+    text-align: center;
+    color: #123b68;
+    margin-bottom: 30px;
+    font-size: 26px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.section h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: #e87820;
+    border-radius: 2px;
+}
+
+.services {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+}
+
+.service-card {
+    background: #fff8dc;
+    border: 1px solid #ffd700;
+    padding: 24px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    border-color: #e87820;
+}
+
+.service-card .icon {
+    font-size: 38px;
+    margin-bottom: 12px;
+}
+
+.service-card h3 {
+    color: #123b68;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.service-card p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #444;
+}
+
+.service-card a {
+    display: inline-block;
+    margin-top: 15px;
+    color: #123b68;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Departments */
+.departments {
+    background: #fef9e7;
+}
+
+.department-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 15px;
+}
+
+.department {
+    background: white;
+    padding: 20px;
+    border-left: 5px solid #e87820;
+    border-radius: 6px;
+    font-weight: bold;
+    color: #123b68;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+}
+
+/* Announcements */
+.announcements {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    max-width: 900px;
+    margin: auto;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.announcements p {
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.announcements p:last-child {
+    border-bottom: none;
+}
+
+/* Footer */
+footer {
+    background: gold;
+    color: black;
+    padding: 35px 5%;
+    text-align: center;
+}
+
+footer h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #123b68;
+}
+
+footer p {
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+footer a {
+    color: #123b68;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+.footer-admin-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 8px 18px;
+    background: #123b68;
+    color: white !important;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.footer-admin-btn:hover {
+    background: #0d2847;
+}
+
+/* Complaint Section */
+.complaint-section {
+    background: #eaf0f7;
+}
+
+.complaint-wrap {
+    max-width: 900px;
+    margin: auto;
+    background: #fff;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.08);
+}
+
+.complaint-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.complaint-form .field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.complaint-form .full {
+    grid-column: 1 / -1;
+}
+
+.complaint-form label {
+    font-weight: 600;
+    color: #123b68;
+    font-size: 14px;
+}
+
+.complaint-form input,
+.complaint-form select,
+.complaint-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font: inherit;
+    font-size: 14px;
+}
+
+.complaint-form input:focus,
+.complaint-form select:focus,
+.complaint-form textarea:focus {
+    border-color: #123b68;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(18, 59, 104, 0.15);
+}
+
+.complaint-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.complaint-form button {
+    grid-column: 1 / -1;
+    padding: 14px;
+    border: 0;
+    border-radius: 6px;
+    background: #e87820;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.complaint-form button:hover {
+    background: #d16712;
+}
+
+.complaint-form button:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+.form-note {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+#complaintMessage {
+    margin-top: 16px;
+    padding: 14px;
+    border-radius: 6px;
+    display: none;
+    overflow-wrap: anywhere;
+    font-size: 14px;
+}
+
+#complaintMessage.success {
+    display: block;
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #86efac;
+}
+
+#complaintMessage.error {
+    display: block;
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+}
+
+/* Responsive adjustments */
+@media(max-width: 768px) {
+    .topbar {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+
+    .topbar-right {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .logo {
+        flex-direction: column;
+    }
+
+    .logo img {
+        width: 110px;
+        height: 110px;
+    }
+
+    nav ul {
+        flex-direction: column;
+    }
+
+    nav ul li a {
+        padding: 10px 14px;
+        text-align: center;
+    }
+
+    .hero h2 {
+        font-size: 26px;
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+
+    .search-box input {
+        width: 180px;
+    }
+
+    .complaint-form {
+        grid-template-columns: 1fr;
+    }
+
+    .complaint-form .full {
+        grid-column: auto;
+    }
+}

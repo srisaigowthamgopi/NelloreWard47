@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>47th Municipal Ward Nellore Rural - Citizen Portal</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<div class="topbar">
+    <span data-i18n="topbar_title">47th Ward Nellore Rural Constituency Portal - Andhra Pradesh</span>
+    <div class="topbar-right">
+        <div class="lang-switch" role="group" aria-label="Language Selector">
+            <button type="button" id="btn-en" class="lang-btn active" onclick="switchLanguage('en')">English</button>
+            <span class="lang-sep">|</span>
+            <button type="button" id="btn-te" class="lang-btn" onclick="switchLanguage('te')">తెలుగు</button>
+        </div>
+        <a href="./admin.html" class="topbar-admin-link" data-i18n="admin_link">🔑 Admin Portal</a>
+    </div>
+</div>
+
+<header class="header">
+    <div class="logo">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoQXoQuUXLED59ruK-u7b-Do1NXKG_YfDUb_didjW2sQ&s=10"
+             alt="Nellore Rural Constituency Emblem">
+        <div>
+            <h1 data-i18n="header_title">47th Municipal Corporation Ward</h1>
+            <p data-i18n="header_subtitle">Citizen Services and Information Portal</p>
+        </div>
+    </div>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search services..." data-i18n-placeholder="search_placeholder">
+        <button onclick="searchWebsite()" data-i18n="search_btn">Search</button>
+    </div>
+</header>
+
+<nav>
+<ul>
+    <li><a href="#home" data-i18n="nav_home">Home</a></li>
+    <li><a href="#about" data-i18n="nav_about">About Nellore Rural</a></li>
+    <li><a href="#departments" data-i18n="nav_departments">Departments</a></li>
+    <li><a href="#areas" data-i18n="nav_areas">Areas</a></li>
+    <li><a href="#services" data-i18n="nav_services">Citizen Services</a></li>
+    <li><a href="#complaints" data-i18n="nav_complaints">Raise a Problem</a></li>
+    <li><a href="#news" data-i18n="nav_news">Announcements</a></li>
+    <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+    <li class="nav-admin-item"><a href="./admin.html" data-i18n="nav_admin">Admin Login</a></li>
+</ul>
+</nav>
+
+<section class="hero" id="home">
+    <h2 data-i18n="hero_title">Welcome to Nellore Rural - Andhra Pradesh</h2>
+    <p data-i18n="hero_desc">Discover Ward services, departments, Ward information and public initiatives through a single citizen-friendly portal. Promoting transparency, development and digital governance.</p>
+    <button onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})" data-i18n="hero_btn">Explore Citizen Services</button>
+</section>
+
+<section class="section" id="about">
+    <h2 data-i18n="about_title">About Nellore Rural</h2>
+    <p style="text-align:center; max-width:900px; margin:auto; line-height:1.8;" data-i18n="about_desc">
+        Nellore Rural Assembly Constituency is one of the prominent regions in Andhra Pradesh, known for its cultural heritage, urban expansion, and spiritual centers.
+    </p>
+</section>
+
+<section class="section" id="services">
+    <h2 data-i18n="services_section_title">Citizen Services In 47th Municipal Corporation Ward</h2>
+    <div class="services">
+        <div class="service-card">
+            <div class="icon">🚛</div>
+            <h3 data-i18n="svc_garbage_title">Garbage Collection</h3>
+            <p data-i18n="svc_garbage_desc">Daily Garbage Collection In Every Street</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">🕳️</div>
+            <h3 data-i18n="svc_drainage_title">Underground Drainage</h3>
+            <p data-i18n="svc_drainage_desc">Maintaining A Clean And Hygienic Environment</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">🏥</div>
+            <h3 data-i18n="svc_health_title">Health Services</h3>
+            <p data-i18n="svc_health_desc">Access health department information</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">🛣️</div>
+            <h3 data-i18n="svc_roads_title">CC/BT Roads</h3>
+            <p data-i18n="svc_roads_desc">Safer Travel And Better Connectivity Across Every Street In Ward</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">🎓</div>
+            <h3 data-i18n="svc_edu_title">Education</h3>
+            <p data-i18n="svc_edu_desc">Access Education Services With Ward Sachivalayam</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">💡</div>
+            <h3 data-i18n="svc_lights_title">Street Lights</h3>
+            <p data-i18n="svc_lights_desc">Street Lights Required In Every Location</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">🏫</div>
+            <h3 data-i18n="svc_school_title">Government School Infrastructure</h3>
+            <p data-i18n="svc_school_desc">Better Education For Poor People</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">🌳</div>
+            <h3 data-i18n="svc_parks_title">Parks And Children Play Area</h3>
+            <p data-i18n="svc_parks_desc">Creating Green Spaces, Building Happy Childhoods</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">🦟</div>
+            <h3 data-i18n="svc_mosquito_title">Mosquito Control</h3>
+            <p data-i18n="svc_mosquito_desc">Building a Healthier Mosquito-Free Ward</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">🏛️</div>
+            <h3 data-i18n="svc_welfare_title">Welfare Scheme Application</h3>
+            <p data-i18n="svc_welfare_desc">Ensuring Welfare Schemes Reach Every Eligible Citizen</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">💧</div>
+            <h3 data-i18n="svc_water_title">Water Facility</h3>
+            <p data-i18n="svc_water_desc">Ensuring Reliable Drinking Water For Every Household</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">🧹</div>
+            <h3 data-i18n="svc_sanitation_title">Sanitation Drives</h3>
+            <p data-i18n="svc_sanitation_desc">Building a Cleaner And Healthier Ward</p>
+        </div>
+    </div>
+</section>
+
+<!-- Citizen complaint registration form -->
+<section class="section complaint-section" id="complaints">
+  <h2 data-i18n="complaint_title">Raise a Public Problem</h2>
+  <div class="complaint-wrap">
+    <p style="line-height:1.6; margin-bottom:20px;" data-i18n="complaint_subtitle">Submit a problem affecting your street or area. Fields marked * are required.</p>
+    <form id="complaintForm" class="complaint-form">
+      <div class="field">
+        <label for="citizenName" data-i18n="lbl_name">Citizen Name *</label>
+        <input id="citizenName" name="name" type="text" maxlength="100" autocomplete="name" required placeholder="Enter your full name" data-i18n-placeholder="ph_name">
+      </div>
+      <div class="field">
+        <label for="mobile" data-i18n="lbl_mobile">Mobile Number *</label>
+        <input id="mobile" name="mobile" type="tel" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" autocomplete="tel" required placeholder="10-digit mobile number" data-i18n-placeholder="ph_mobile">
+      </div>
+      <div class="field">
+        <label for="area" data-i18n="lbl_area">Area *</label>
+        <input id="area" name="area" type="text" maxlength="120" required placeholder="Enter your area" data-i18n-placeholder="ph_area">
+      </div>
+      <div class="field">
+        <label for="street" data-i18n="lbl_street">Street *</label>
+        <input id="street" name="street" type="text" maxlength="120" required placeholder="Enter street / lane" data-i18n-placeholder="ph_street">
+      </div>
+      <div class="field full">
+        <label for="problemType" data-i18n="lbl_problem_type">Type of Problem *</label>
+        <select id="problemType" name="problemType" required>
+            <option value="" data-i18n="opt_select">-- Select Type of Problem --</option>
+            <option value="Road Damage" data-i18n="opt_road">Road Damage</option>
+            <option value="Drainage Problem" data-i18n="opt_drainage">Drainage Problem</option>
+            <option value="Water Supply" data-i18n="opt_water">Water Supply Problem</option>
+            <option value="Garbage Collection" data-i18n="opt_garbage">Garbage Collection</option>
+            <option value="Street Light" data-i18n="opt_light">Street Light Problem</option>
+            <option value="Sanitation" data-i18n="opt_sanitation">Sanitation Problem</option>
+            <option value="Mosquito Control" data-i18n="opt_mosquito">Mosquito Control</option>
+            <option value="Public Park" data-i18n="opt_park">Public Park Problem</option>
+            <option value="Government School" data-i18n="opt_school">Government School Problem</option>
+            <option value="Welfare Scheme" data-i18n="opt_welfare">Welfare Scheme Problem</option>
+            <option value="Other" data-i18n="opt_other">Other Problem</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label for="description" data-i18n="lbl_desc">Description of the Problem *</label>
+        <textarea id="description" name="description" maxlength="2000" required placeholder="Explain the problem, location details, and how it affects residents" data-i18n-placeholder="ph_desc"></textarea>
+      </div>
+      <div class="field full">
+        <label for="photo" data-i18n="lbl_photo">Problem Photo (optional)</label>
+        <input id="photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp">
+        <span class="form-note" data-i18n="photo_note">Optional image upload. Maximum file size: 5 MB. Avoid including sensitive personal information in photos.</span>
+      </div>
+      <div class="field full">
+        <label style="font-weight:normal;" data-i18n="lbl_consent">
+          <input type="checkbox" id="consent" required style="width:auto;"> I agree to submit these details for handling this public problem. My mobile number will be stored with the complaint.
+        </label>
+      </div>
+      <button id="submitComplaint" type="submit" data-i18n="btn_submit">Submit Complaint</button>
+    </form>
+    <div id="complaintMessage" role="status" aria-live="polite"></div>
+    <p class="form-note" style="margin-top:16px;" data-i18n="complaint_disclaimer">This is an independent citizen portal, not an official government complaint system. Do not submit emergency reports or sensitive information.</p>
+  </div>
+</section>
+
+<section class="section departments" id="departments">
+    <h2 data-i18n="dept_section_title">Government Departments</h2>
+    <div class="department-grid">
+        <div class="department" data-i18n="dept_agri">Agriculture Department</div>
+        <div class="department" data-i18n="dept_health">Health Department</div>
+        <div class="department" data-i18n="dept_edu">Education Department</div>
+        <div class="department" data-i18n="dept_admin">Municipal Administration</div>
+        <div class="department" data-i18n="dept_rev">Revenue Department</div>
+        <div class="department" data-i18n="dept_it">Information Technology</div>
+        <div class="department" data-i18n="dept_police">Police Department</div>
+        <div class="department" data-i18n="dept_panchayat">Panchayat Raj Department</div>
+    </div>
+</section>
+
+<section class="section" id="areas">
+    <h2 data-i18n="areas_section_title">47th Municipal Corporation Ward Area Information</h2>
+    <div class="services">
+        <div class="service-card">
+            <div class="icon">→</div>
+            <h3 data-i18n="area_east_title">East</h3>
+            <p data-i18n="area_east_desc">Gouthami Nagar 3rd Street toward Sanjay Gandhi Nagar 3rd Street <br><br>Nellore Rural <br> Andhra Pradesh</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">←</div>
+            <h3 data-i18n="area_west_title">West</h3>
+            <p data-i18n="area_west_desc">Vengalrao Nagar C Block 60-feet Donka Road toward the mosque near Ramachandra Mission Road <br>Nellore Rural<br>Andhra Pradesh</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">↑</div>
+            <h3 data-i18n="area_north_title">North</h3>
+            <p data-i18n="area_north_desc">Ramachandra Mission Road, St. Paul's School Road, Gouthami Nagar 3rd Street, Podalakur Road <br>Nellore Rural <br> Andhra Pradesh</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">↓</div>
+            <h3 data-i18n="area_south_title">South</h3>
+            <p data-i18n="area_south_desc">Sanjay Gandhi Nagar 3rd Street, Golden Hills Apartments, Bank Colony Road, Vengalrao Nagar <br>Nellore Rural <br> Andhra Pradesh</p>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="news">
+    <h2 data-i18n="news_section_title">Latest Announcements</h2>
+    <div class="announcements">
+        <p data-i18n="news_1">📢 Government announcements and public notices.</p>
+        <p data-i18n="news_2">📢 Citizen service updates.</p>
+        <p data-i18n="news_3">📢 Department notifications and information.</p>
+        <p data-i18n="news_4">📢 Public welfare scheme information.</p>
+    </div>
+</section>
+
+<footer id="contact">
+    <h3 data-i18n="footer_title">47th Ward Nellore Rural Constituency Citizen Portal</h3>
+    <p data-i18n="footer_sub">Designed to provide easy access to public information.</p>
+    <p><span data-i18n="footer_contact_label">Contact Mobile No:</span> 7981487711 / 9440500357</p>
+    <p><span data-i18n="footer_email_label">Email:</span> gowthamgopi618@gmail.com</p>
+    <p><span data-i18n="footer_gov_label">Official Government Portal:</span> <a href="https://ap.gov.in/" target="_blank" rel="noopener">ap.gov.in</a></p>
+    <p data-i18n="footer_copy">© 2026 Citizen Portal. Independent website template.</p>
+    <div>
+        <a href="./admin.html" class="footer-admin-btn" data-i18n="footer_admin_btn">🔐 Ward 47 Staff / Admin Dashboard</a>
+    </div>
+</footer>
+
+<script>
+// ==========================================
+// BILINGUAL TRANSLATION DICTIONARY (EN & TE)
+// ==========================================
+const translations = {
+    en: {
+        topbar_title: "47th Ward Nellore Rural Constituency Portal - Andhra Pradesh",
+        admin_link: "🔑 Admin Portal",
+        header_title: "47th Municipal Corporation Ward",
+        header_subtitle: "Citizen Services and Information Portal",
+        search_placeholder: "Search services...",
+        search_btn: "Search",
+        nav_home: "Home",
+        nav_about: "About Nellore Rural",
+        nav_departments: "Departments",
+        nav_areas: "Areas",
+        nav_services: "Citizen Services",
+        nav_complaints: "Raise a Problem",
+        nav_news: "Announcements",
+        nav_contact: "Contact",
+        nav_admin: "Admin Login",
+        hero_title: "Welcome to Nellore Rural - Andhra Pradesh",
+        hero_desc: "Discover Ward services, departments, Ward information and public initiatives through a single citizen-friendly portal. Promoting transparency, development and digital governance.",
+        hero_btn: "Explore Citizen Services",
+        about_title: "About Nellore Rural",
+        about_desc: "Nellore Rural Assembly Constituency is one of the prominent regions in Andhra Pradesh, known for its cultural heritage, urban expansion, and spiritual centers.",
+        services_section_title: "Citizen Services In 47th Municipal Corporation Ward",
+        svc_garbage_title: "Garbage Collection",
+        svc_garbage_desc: "Daily Garbage Collection In Every Street",
+        svc_drainage_title: "Underground Drainage",
+        svc_drainage_desc: "Maintaining A Clean And Hygienic Environment",
+        svc_health_title: "Health Services",
+        svc_health_desc: "Access health department information",
+        svc_roads_title: "CC/BT Roads",
+        svc_roads_desc: "Safer Travel And Better Connectivity Across Every Street In Ward",
+        svc_edu_title: "Education",
+        svc_edu_desc: "Access Education Services With Ward Sachivalayam",
+        svc_lights_title: "Street Lights",
+        svc_lights_desc: "Street Lights Required In Every Location",
+        svc_school_title: "Government School Infrastructure",
+        svc_school_desc: "Better Education For Poor People",
+        svc_parks_title: "Parks And Children Play Area",
+        svc_parks_desc: "Creating Green Spaces, Building Happy Childhoods",
+        svc_mosquito_title: "Mosquito Control",
+        svc_mosquito_desc: "Building a Healthier Mosquito-Free Ward",
+        svc_welfare_title: "Welfare Scheme Application",
+        svc_welfare_desc: "Ensuring Welfare Schemes Reach Every Eligible Citizen",
+        svc_water_title: "Water Facility",
+        svc_water_desc: "Ensuring Reliable Drinking Water For Every Household",
+        svc_sanitation_title: "Sanitation Drives",
+        svc_sanitation_desc: "Building a Cleaner And Healthier Ward",
+        complaint_title: "Raise a Public Problem",
+        complaint_subtitle: "Submit a problem affecting your street or area. Fields marked * are required.",
+        lbl_name: "Citizen Name *",
+        ph_name: "Enter your full name",
+        lbl_mobile: "Mobile Number *",
+        ph_mobile: "10-digit mobile number",
+        lbl_area: "Area *",
+        ph_area: "Enter your area",
+        lbl_street: "Street *",
+        ph_street: "Enter street / lane",
+        lbl_problem_type: "Type of Problem *",
+        opt_select: "-- Select Type of Problem --",
+        opt_road: "Road Damage",
+        opt_drainage: "Drainage Problem",
+        opt_water: "Water Supply Problem",
+        opt_garbage: "Garbage Collection",
+        opt_light: "Street Light Problem",
+        opt_sanitation: "Sanitation Problem",
+        opt_mosquito: "Mosquito Control",
+        opt_park: "Public Park Problem",
+        opt_school: "Government School Problem",
+        opt_welfare: "Welfare Scheme Problem",
+        opt_other: "Other Problem",
+        lbl_desc: "Description of the Problem *",
+        ph_desc: "Explain the problem, location details, and how it affects residents",
+        lbl_photo: "Problem Photo (optional)",
+        photo_note: "Optional image upload. Maximum file size: 5 MB. Avoid including sensitive personal information in photos.",
+        lbl_consent: '<input type="checkbox" id="consent" required style="width:auto;"> I agree to submit these details for handling this public problem. My mobile number will be stored with the complaint.',
+        btn_submit: "Submit Complaint",
+        btn_submitting: "Submitting...",
+        complaint_disclaimer: "This is an independent citizen portal, not an official government complaint system. Do not submit emergency reports or sensitive information.",
+        dept_section_title: "Government Departments",
+        dept_agri: "Agriculture Department",
+        dept_health: "Health Department",
+        dept_edu: "Education Department",
+        dept_admin: "Municipal Administration",
+        dept_rev: "Revenue Department",
+        dept_it: "Information Technology",
+        dept_police: "Police Department",
+        dept_panchayat: "Panchayat Raj Department",
+        areas_section_title: "47th Municipal Corporation Ward Area Information",
+        area_east_title: "East",
+        area_east_desc: "Gouthami Nagar 3rd Street toward Sanjay Gandhi Nagar 3rd Street <br><br>Nellore Rural <br> Andhra Pradesh",
+        area_west_title: "West",
+        area_west_desc: "Vengalrao Nagar C Block 60-feet Donka Road toward the mosque near Ramachandra Mission Road <br>Nellore Rural<br>Andhra Pradesh",
+        area_north_title: "North",
+        area_north_desc: "Ramachandra Mission Road, St. Paul's School Road, Gouthami Nagar 3rd Street, Podalakur Road <br>Nellore Rural <br> Andhra Pradesh",
+        area_south_title: "South",
+        area_south_desc: "Sanjay Gandhi Nagar 3rd Street, Golden Hills Apartments, Bank Colony Road, Vengalrao Nagar <br>Nellore Rural <br> Andhra Pradesh",
+        news_section_title: "Latest Announcements",
+        news_1: "📢 Government announcements and public notices.",
+        news_2: "📢 Citizen service updates.",
+        news_3: "📢 Department notifications and information.",
+        news_4: "📢 Public welfare scheme information.",
+        footer_title: "47th Ward Nellore Rural Constituency Citizen Portal",
+        footer_sub: "Designed to provide easy access to public information.",
+        footer_contact_label: "Contact Mobile No:",
+        footer_email_label: "Email:",
+        footer_gov_label: "Official Government Portal:",
+        footer_copy: "© 2026 Citizen Portal. Independent website template.",
+        footer_admin_btn: "🔐 Ward 47 Staff / Admin Dashboard",
+        search_prompt_empty: "Please enter a search term.",
+        search_not_found: "No matching results found.",
+        err_mobile_invalid: "Please enter a valid 10-digit Indian mobile number.",
+        err_photo_size: "Photo exceeds 5 MB. Please choose a smaller image.",
+        msg_complaint_success: "Complaint submitted successfully! Your Complaint ID is: ",
+        err_complaint_failed: "Unable to submit complaint.",
+        err_server_conn: "Server connection failed. Please ensure the server is running."
+    },
+    te: {
+        topbar_title: "47వ వార్డు నెల్లూరు రూరల్ నియోజకవర్గం పోర్టల్ - ఆంధ్రప్రదేశ్",
+        admin_link: "🔑 అడ్మిన్ పోర్టల్",
+        header_title: "47వ మున్సిపల్ కార్పొరేషన్ వార్డు",
+        header_subtitle: "పౌర సేవలు మరియు సమాచార వేదిక",
+        search_placeholder: "సేవలను శోధించండి...",
+        search_btn: "శోధించండి",
+        nav_home: "హోమ్",
+        nav_about: "నెల్లూరు రూరల్ గురించి",
+        nav_departments: "ప్రభుత్వ శాఖలు",
+        nav_areas: "ప్రాంతాల సమాచారం",
+        nav_services: "పౌర సేవలు",
+        nav_complaints: "సమస్య నమోదు",
+        nav_news: "ప్రకటనలు",
+        nav_contact: "సంప్రదించండి",
+        nav_admin: "అడ్మిన్ లాగిన్",
+        hero_title: "నెల్లూరు రూరల్ కు స్వాగతం - ఆంధ్రప్రదేశ్",
+        hero_desc: "ఒకే ఒక్క వేదిక ద్వారా వార్డు సేవలు, శాఖల వివరాలు, వార్డు సమాచారం మరియు ప్రజా కార్యక్రమాలను తెలుసుకోండి. పారదర్శకత, అభివృద్ధి మరియు డిజిటల్ పరిపాలనను ప్రోత్సహిస్తుంది.",
+        hero_btn: "పౌర సేవలను వీక్షించండి",
+        about_title: "నెల్లూరు రూరల్ గురించి",
+        about_desc: "నెల్లూరు రూరల్ అసెంబ్లీ నియోజకవర్గం ఆంధ్రప్రదేశ్‌లోని ప్రముఖ ప్రాంతాలలో ఒకటి, సాంస్కృతిక వారసత్వం, నగర విస్తరణ మరియు ఆధ్యాత్మిక కేంద్రాలకు ప్రసిద్ధి చెందింది.",
+        services_section_title: "47వ మున్సిపల్ కార్పొరేషన్ వార్డులోని పౌర సేవలు",
+        svc_garbage_title: "చెత్త సేకరణ",
+        svc_garbage_desc: "ప్రతి వీధిలో రోజువారీ చెత్త సేకరణ",
+        svc_drainage_title: "భూగర్భ డ్రైనేజీ (UGD)",
+        svc_drainage_desc: "పరిశుభ్రమైన మరియు ఆరోగ్యకరమైన పరిసరాల నిర్వహణ",
+        svc_health_title: "వైద్య & ఆరోగ్య సేవలు",
+        svc_health_desc: "ఆరోగ్య శాఖ సమాచారం మరియు ప్రాథమిక చికిత్స వివరాలు",
+        svc_roads_title: "సిసి / బిటి రోడ్లు",
+        svc_roads_desc: "వార్డులోని ప్రతి వీధిలో సురక్షితమైన ప్రయాణం మరియు రవాణా సౌకర్యం",
+        svc_edu_title: "విద్యా సేవలు",
+        svc_edu_desc: "వార్డు సచివాలయం ద్వారా విద్యా సేవలు మరియు పథకాలు",
+        svc_lights_title: "వీధి దీపాలు",
+        svc_lights_desc: "ప్రతి ప్రాంతంలో వీధి దీపాల సదుపాయం & నిర్వహణ",
+        svc_school_title: "ప్రభుత్వ పాఠశాలల మౌలిక వసతులు",
+        svc_school_desc: "పేద విద్యార్థులకు నాణ్యమైన విద్య మరియు ఆధునిక వసతులు",
+        svc_parks_title: "పార్కులు & పిల్లల ఆట స్థలాలు",
+        svc_parks_desc: "పచ్చదనం పెంచడం, పిల్లలకు ఆహ్లాదకరమైన వాతావరణం కల్పించడం",
+        svc_mosquito_title: "దోమల నివారణ",
+        svc_mosquito_desc: "దోమలు లేని ఆరోగ్యకరమైన మరియు స్వచ్ఛమైన వార్డు నిర్మాణం",
+        svc_welfare_title: "సంక్షేమ పథకాల దరఖాస్తు",
+        svc_welfare_desc: "అర్హులైన ప్రతి పౌరుడికి ప్రభుత్వ సంక్షేమ పథకాలు చేరవేయడం",
+        svc_water_title: "మంచినీటి సదుపాయం",
+        svc_water_desc: "ప్రతి ఇంటికీ సురక్షితమైన తాగునీరు అందించడం",
+        svc_sanitation_title: "పారిశుద్ధ్య కార్యక్రమాలు",
+        svc_sanitation_desc: "పరిశుభ్రమైన మరియు ఆరోగ్యకరమైన వార్డును తీర్చిదిద్దడం",
+        complaint_title: "ప్రజా సమస్యను నమోదు చేయండి",
+        complaint_subtitle: "మీ వీధి లేదా ప్రాంతంలో ఉన్న సమస్యను తెలియజేయండి. * గుర్తు ఉన్న వివరాలు తప్పనిసరి.",
+        lbl_name: "పౌరుని పేరు *",
+        ph_name: "మీ పూర్తి పేరు నమోదు చేయండి",
+        lbl_mobile: "మొబైల్ నంబర్ *",
+        ph_mobile: "10 అంకెల మొబైల్ నంబర్",
+        lbl_area: "ప్రాంతం / కాలనీ *",
+        ph_area: "మీ ప్రాంతం నమోదు చేయండి",
+        lbl_street: "వీధి / సందు *",
+        ph_street: "వీధి లేదా సందు పేరు",
+        lbl_problem_type: "సమస్య రకం *",
+        opt_select: "-- సమస్య రకాన్ని ఎంచుకోండి --",
+        opt_road: "రోడ్డు సమస్య / గుంతలు (Road Damage)",
+        opt_drainage: "డ్రైనేజీ సమస్య (Drainage Problem)",
+        opt_water: "తాగునీటి సరఫరా సమస్య (Water Supply)",
+        opt_garbage: "చెత్త సేకరణ సమస్య (Garbage Collection)",
+        opt_light: "వీధి దీపాల సమస్య (Street Light)",
+        opt_sanitation: "పారిశుద్ధ్య సమస్య (Sanitation Problem)",
+        opt_mosquito: "దోమల నివారణ (Mosquito Control)",
+        opt_park: "పార్క్ సమస్య (Public Park)",
+        opt_school: "ప్రభుత్వ పాఠశాల సమస్య (Govt School)",
+        opt_welfare: "సంక్షేమ పథకం సమస్య (Welfare Scheme)",
+        opt_other: "ఇతర సమస్య (Other Problem)",
+        lbl_desc: "సమస్య పూర్తి వివరాలు *",
+        ph_desc: "సమస్య ఏమిటి, ఖచ్చితమైన స్థలం, ప్రజలు ఎదుర్కొంటున్న ఇబ్బందులను వివరించండి",
+        lbl_photo: "సమస్య ఫోటో (ఐచ్ఛికం)",
+        photo_note: "ఐచ్ఛికం. గరిష్ట పరిమాణం: 5 MB. వ్యక్తిగత గోప్యతా సమాచారం లేకుండా ఫోటో తీయండి.",
+        lbl_consent: '<input type="checkbox" id="consent" required style="width:auto;"> ఈ ప్రజా సమస్య పరిష్కారం కోసం ఈ వివరాలు సమర్పించడానికి నేను అంగీకరిస్తున్నాను. ఫిర్యాదుతో పాటు నా మొబైల్ నంబర్ నిల్వ చేయబడుతుంది.',
+        btn_submit: "సమస్యను సమర్పించండి",
+        btn_submitting: "సమర్పిస్తోంది...",
+        complaint_disclaimer: "ఇది ఒక స్వతంత్ర పౌర వేదిక, అధికారిక ప్రభుత్వ ఫిర్యాదుల వ్యవస్థ కాదు. అత్యవసర లేదా రహస్య సమాచారాన్ని ఇక్కడ నమోదు చేయవద్దు.",
+        dept_section_title: "ప్రభుత్వ శాఖలు",
+        dept_agri: "వ్యవసాయ శాఖ",
+        dept_health: "వైద్య & ఆరోగ్య శాఖ",
+        dept_edu: "విద్యా శాఖ",
+        dept_admin: "పురపాలక పరిపాలన శాఖ",
+        dept_rev: "రెవెన్యూ శాఖ",
+        dept_it: "సమాచార సాంకేతిక శాఖ (IT)",
+        dept_police: "పోలీసు శాఖ",
+        dept_panchayat: "పంచాయతీ రాజ్ శాఖ",
+        areas_section_title: "47వ మున్సిపల్ కార్పొరేషన్ వార్డు సరిహద్దులు & ప్రాంతాల సమాచారం",
+        area_east_title: "తూర్పు",
+        area_east_desc: "గౌతమి నగర్ 3వ వీధి నుండి సంజయ్ గాంధీ నగర్ 3వ వీధి వైపు <br><br>నెల్లూరు రూరల్ <br> ఆంధ్రప్రదేశ్",
+        area_west_title: "పశ్చిమం",
+        area_west_desc: "వెంగళరావు నగర్ సి బ్లాక్ 60 అడుగుల డొంక రోడ్డు నుండి రామచంద్ర మిషన్ రోడ్డు సమీపంలోని మసీదు వైపు <br>నెల్లూరు రూరల్<br>ఆంధ్రప్రదేశ్",
+        area_north_title: "ఉత్తరం",
+        area_north_desc: "రామచంద్ర మిషన్ రోడ్, సెయింట్ పాల్స్ స్కూల్ రోడ్, గౌతమి నగర్ 3వ వీధి, పొదలకూరు రోడ్డు <br>నెల్లూరు రూరల్ <br> ఆంధ్రప్రదేశ్",
+        area_south_title: "దక్షిణం",
+        area_south_desc: "సంజయ్ గాంధీ నగర్ 3వ వీధి, గోల్డెన్ హిల్స్ అపార్ట్‌మెంట్స్, బ్యాంక్ కాలనీ రోడ్, వెంగళరావు నగర్ <br>నెల్లూరు రూరల్ <br> ఆంధ్రప్రదేశ్",
+        news_section_title: "తాజా ప్రకటనలు",
+        news_1: "📢 ప్రభుత్వ ప్రకటనలు మరియు ప్రజా సూచనలు.",
+        news_2: "📢 పౌర సేవల సమాచారం మరియు నవీకరణలు.",
+        news_3: "📢 శాఖాపరమైన నోటిఫికేషన్‌లు మరియు వివరాలు.",
+        news_4: "📢 ప్రజా సంక్షేమ పథకాల సమాచారం.",
+        footer_title: "47వ వార్డు నెల్లూరు రూరల్ నియోజకవర్గం పౌర పోర్టల్",
+        footer_sub: "ప్రజా సమాచారాన్ని సులభంగా అందించడానికి రూపొందించబడింది.",
+        footer_contact_label: "సంప్రదించవలసిన నంబర్లు:",
+        footer_email_label: "ఈమెయిల్:",
+        footer_gov_label: "అధికారిక ప్రభుత్వ పోర్టల్:",
+        footer_copy: "© 2026 పౌర పోర్టల్. స్వతంత్ర వెబ్‌సైట్ టెంప్లేట్.",
+        footer_admin_btn: "🔐 వార్డు 47 సిబ్బంది / అడ్మిన్ డ్యాష్‌బోర్డ్",
+        search_prompt_empty: "దయచేసి శోధించవలసిన పదాన్ని నమోదు చేయండి.",
+        search_not_found: "సరిపోలే సమాచారం లభించలేదు.",
+        err_mobile_invalid: "దయచేసి సరైన 10 అంకెల భారతీయ మొబైల్ నంబరును నమోదు చేయండి.",
+        err_photo_size: "ఫోటో పరిమాణం 5 MB కంటే ఎక్కువ ఉంది. దయచేసి చిన్న చిత్రాన్ని ఎంచుకోండి.",
+        msg_complaint_success: "ఫిర్యాదు విజయవంతంగా నమోదైంది! మీ ఫిర్యాదు ఐడీ (Complaint ID): ",
+        err_complaint_failed: "ఫిర్యాదు నమోదు చేయడం సాధ్యం కాలేదు.",
+        err_server_conn: "సర్వర్ అనుసంధానం విఫలమైంది. దయచేసి సర్వర్ నడుస్తున్నదో లేదో నిర్ధారించుకోండి."
+    }
+};
+
+let currentLang = localStorage.getItem("ward47_portal_lang") || "en";
+
+function switchLanguage(lang) {
+    if (!translations[lang]) return;
+    currentLang = lang;
+    localStorage.setItem("ward47_portal_lang", lang);
+    document.documentElement.lang = lang;
+
+    // Toggle active state on buttons
+    const btnEn = document.getElementById("btn-en");
+    const btnTe = document.getElementById("btn-te");
+    if (btnEn && btnTe) {
+        if (lang === "te") {
+            btnTe.classList.add("active");
+            btnEn.classList.remove("active");
+        } else {
+            btnEn.classList.add("active");
+            btnTe.classList.remove("active");
+        }
+    }
+
+    const dict = translations[lang];
+
+    // Update all text nodes with data-i18n
+    document.querySelectorAll("[data-i18n]").forEach(elem => {
+        const key = elem.getAttribute("data-i18n");
+        if (dict[key] !== undefined) {
+            if (dict[key].includes("<") && dict[key].includes(">")) {
+                elem.innerHTML = dict[key];
+            } else {
+                elem.textContent = dict[key];
+            }
+        }
+    });
+
+    // Update input placeholders
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(elem => {
+        const key = elem.getAttribute("data-i18n-placeholder");
+        if (dict[key] !== undefined) {
+            elem.setAttribute("placeholder", dict[key]);
+        }
+    });
+}
+
+// Run initial translation on load
+document.addEventListener("DOMContentLoaded", () => {
+    switchLanguage(currentLang);
+});
+
+// ==========================================
+// SEARCH FUNCTIONALITY
+// ==========================================
+function searchWebsite() {
+    const input = document.getElementById("searchInput").value.toLowerCase().trim();
+    const dict = translations[currentLang];
+    if (!input) {
+        alert(dict.search_prompt_empty || "Please enter a search term.");
+        return;
+    }
+    const cards = document.querySelectorAll(".service-card, .department, .announcements p");
+    let found = false;
+    cards.forEach(card => {
+        const match = card.innerText.toLowerCase().includes(input);
+        card.style.display = match ? "" : "none";
+        card.style.outline = match ? "2px solid #e87820" : "none";
+        if (match) found = true;
+    });
+    if (!found) {
+        alert(dict.search_not_found || "No matching results found.");
+        cards.forEach(card => { card.style.display = ""; card.style.outline = "none"; });
+    }
+}
+
+// ==========================================
+// COMPLAINT FORM SUBMISSION
+// ==========================================
+const complaintForm = document.getElementById("complaintForm");
+const complaintMessage = document.getElementById("complaintMessage");
+const submitButton = document.getElementById("submitComplaint");
+
+complaintForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    complaintMessage.className = "";
+    complaintMessage.style.display = "none";
+    const dict = translations[currentLang];
+
+    const mobile = document.getElementById("mobile").value.trim();
+    if (!/^[6-9]\d{9}$/.test(mobile)) {
+        showMessage(dict.err_mobile_invalid || "Please enter a valid 10-digit Indian mobile number.", "error");
+        return;
+    }
+
+    const photoInput = document.getElementById("photo");
+    const photo = photoInput ? photoInput.files[0] : null;
+    if (photo && photo.size > 5 * 1024 * 1024) {
+        showMessage(dict.err_photo_size || "Photo exceeds 5 MB. Please choose a smaller image.", "error");
+        return;
+    }
+
+    const formData = new FormData(complaintForm);
+    submitButton.disabled = true;
+    submitButton.textContent = dict.btn_submitting || "Submitting...";
+
+    // Route API to Node.js server if opened via VS Code Live Server (port 5500) or local file
+    const isLocalPreview = window.location.port === "5500" || window.location.protocol === "file:";
+    const backendUrl = isLocalPreview
+        ? "http://localhost:3000"
+        : "";
+
+    try {
+        const response = await fetch(`${backendUrl}/api/complaints`, {
+            method: "POST",
+            body: formData
+        });
+
+        let result = {};
+        const contentType = response.headers.get("content-type") || "";
+        if (contentType.includes("application/json")) {
+            result = await response.json();
+        } else {
+            throw new Error(`Server returned status ${response.status}`);
+        }
+
+        if (!response.ok) throw new Error(result.message || dict.err_complaint_failed);
+        showMessage((dict.msg_complaint_success || "Complaint submitted successfully! ID: ") + result.complaintId, "success");
+        complaintForm.reset();
+    } catch (error) {
+        if (!isLocalPreview) {
+            console.error("Complaint submission failed:", error);
+            showMessage(error.message || dict.err_complaint_failed || "Unable to submit your complaint. Please try again.", "error");
+            return;
+        }
+
+        // Automatic Client-Side Storage fallback if Node.js server is not running
+        console.warn("Backend server not detected, storing complaint in browser database:", error);
+
+        const existingComplaints = JSON.parse(localStorage.getItem("ward47_portal_complaints") || "[]");
+        const nextIdNumber = existingComplaints.length + 1;
+        const complaintId = `W47-${String(nextIdNumber).padStart(5, "0")}`;
+
+        const newComplaint = {
+            complaintId: complaintId,
+            submittedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+            name: document.getElementById("citizenName").value.trim(),
+            mobile: document.getElementById("mobile").value.trim(),
+            area: document.getElementById("area").value.trim(),
+            street: document.getElementById("street").value.trim(),
+            problemType: document.getElementById("problemType").value,
+            description: document.getElementById("description").value.trim(),
+            photoFilename: photo ? photo.name : "",
+            status: "Received"
+        };
+
+        existingComplaints.unshift(newComplaint);
+        localStorage.setItem("ward47_portal_complaints", JSON.stringify(existingComplaints));
+
+        showMessage((dict.msg_complaint_success || "Complaint submitted successfully! Your Complaint ID is: ") + complaintId + " (Saved to Ward Database)", "success");
+        complaintForm.reset();
+    } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = dict.btn_submit || "Submit Complaint";
+    }
+});
+
+function showMessage(message, type) {
+    complaintMessage.textContent = message;
+    complaintMessage.className = type;
+    complaintMessage.style.display = "block";
+}
+</script>
+</body>
+</html>
