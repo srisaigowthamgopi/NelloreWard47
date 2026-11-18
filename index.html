@@ -22,33 +22,34 @@
 
 <header class="header">
     <div class="logo">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoQXoQuUXLED59ruK-u7b-Do1NXKG_YfDUb_didjW2sQ&s=10"
-             alt="Nellore Rural Constituency Emblem">
+        <img src="./logo.png"
+             alt="Nellore Municipal Corporation Emblem">
         <div>
             <h1 data-i18n="header_title">47th Municipal Corporation Ward</h1>
             <p data-i18n="header_subtitle">Citizen Services and Information Portal</p>
         </div>
     </div>
     <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search services..." data-i18n-placeholder="search_placeholder">
+        <input type="text" id="searchInput" placeholder="Search services..." data-i18n-placeholder="search_placeholder" onkeydown="if(event.key==='Enter') searchWebsite()">
         <button onclick="searchWebsite()" data-i18n="search_btn">Search</button>
     </div>
+    <!-- Search floating notification -->
+    <div id="searchNotice" class="search-notice" role="status" aria-live="polite"></div>
 </header>
 
 <nav>
 <ul>
     <li><a href="#home" data-i18n="nav_home">Home</a></li>
     <li><a href="#about" data-i18n="nav_about">About Nellore Rural</a></li>
-    <li><a href="#departments" data-i18n="nav_departments">Departments</a></li>
-    <li><a href="#areas" data-i18n="nav_areas">Areas</a></li>
     <li><a href="#services" data-i18n="nav_services">Citizen Services</a></li>
     <li><a href="#complaints" data-i18n="nav_complaints">Raise a Problem</a></li>
+    <li><a href="#departments" data-i18n="nav_departments">Government Departments</a></li>
+    <li><a href="#areas" data-i18n="nav_areas">47th Ward Area</a></li>
     <li><a href="#news" data-i18n="nav_news">Announcements</a></li>
     <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
-    <li class="nav-admin-item"><a href="./admin.html" data-i18n="nav_admin">Admin Login</a></li>
 </ul>
 </nav>
-
+ 
 <section class="hero" id="home">
     <h2 data-i18n="hero_title">Welcome to Nellore Rural - Andhra Pradesh</h2>
     <p data-i18n="hero_desc">Discover Ward services, departments, Ward information and public initiatives through a single citizen-friendly portal. Promoting transparency, development and digital governance.</p>
@@ -250,6 +251,9 @@
     </div>
 </footer>
 
+<!-- Floating Back to Top Button -->
+<button id="backToTop" class="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0, behavior:'smooth'})" title="Back to top">↑</button>
+
 <script>
 // ==========================================
 // BILINGUAL TRANSLATION DICTIONARY (EN & TE)
@@ -264,10 +268,10 @@ const translations = {
         search_btn: "Search",
         nav_home: "Home",
         nav_about: "About Nellore Rural",
-        nav_departments: "Departments",
-        nav_areas: "Areas",
         nav_services: "Citizen Services",
         nav_complaints: "Raise a Problem",
+        nav_departments: "Government Departments",
+        nav_areas: "47th Ward Area",
         nav_news: "Announcements",
         nav_contact: "Contact",
         nav_admin: "Admin Login",
@@ -379,10 +383,10 @@ const translations = {
         search_btn: "శోధించండి",
         nav_home: "హోమ్",
         nav_about: "నెల్లూరు రూరల్ గురించి",
-        nav_departments: "ప్రభుత్వ శాఖలు",
-        nav_areas: "ప్రాంతాల సమాచారం",
         nav_services: "పౌర సేవలు",
         nav_complaints: "సమస్య నమోదు",
+        nav_departments: "ప్రభుత్వ శాఖలు",
+        nav_areas: "47వ వార్డు ప్రాంతం",
         nav_news: "ప్రకటనలు",
         nav_contact: "సంప్రదించండి",
         nav_admin: "అడ్మిన్ లాగిన్",
@@ -534,31 +538,214 @@ function switchLanguage(lang) {
 // Run initial translation on load
 document.addEventListener("DOMContentLoaded", () => {
     switchLanguage(currentLang);
+    initTaskbarScroll();
 });
+
+// ==========================================
+// MOBILE TASKBAR SCROLL TRACKER & ACTIVE HIGHLIGHT
+// ==========================================
+function initTaskbarScroll() {
+    const navList = document.querySelector("nav ul");
+    const navLinks = document.querySelectorAll("nav ul li a[href^='#']");
+    const backToTopBtn = document.getElementById("backToTop");
+    if (!navList || navLinks.length === 0) return;
+
+    // Map section IDs to their corresponding nav links
+    const targets = [];
+    navLinks.forEach(link => {
+        const id = link.getAttribute("href").substring(1);
+        const section = document.getElementById(id);
+        if (section) {
+            targets.push({ link, section });
+        }
+        // Immediate visual update on click
+        link.addEventListener("click", () => {
+            updateActiveNav(link);
+        });
+    });
+
+    let isUserSwipingNav = false;
+    let swipeTimer = null;
+    navList.addEventListener("touchstart", () => {
+        isUserSwipingNav = true;
+    }, { passive: true });
+    navList.addEventListener("touchend", () => {
+        clearTimeout(swipeTimer);
+        swipeTimer = setTimeout(() => {
+            isUserSwipingNav = false;
+        }, 800);
+    }, { passive: true });
+
+    let currentActiveLink = null;
+    function updateActiveNav(activeLink) {
+        if (!activeLink || activeLink === currentActiveLink) return;
+        currentActiveLink = activeLink;
+
+        navLinks.forEach(l => l.classList.remove("active"));
+        activeLink.classList.add("active");
+
+        // On mobile, smoothly scroll taskbar contents so the active tab is centered
+        if (window.innerWidth <= 768 && !isUserSwipingNav) {
+            const listRect = navList.getBoundingClientRect();
+            const linkRect = activeLink.getBoundingClientRect();
+            const offset = (linkRect.left + linkRect.width / 2) - (listRect.left + listRect.width / 2);
+            navList.scrollBy({
+                left: offset,
+                behavior: "smooth"
+            });
+        }
+    }
+   
+    // Scroll listener with requestAnimationFrame for 60fps performance
+    let ticking = false;
+    function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+            const scrollPos = window.scrollY + 100;
+            let active = targets[0]?.link;
+
+            for (let i = 0; i < targets.length; i++) {
+                const sec = targets[i].section;
+                const top = sec.offsetTop;
+                if (scrollPos >= top) {
+                    active = targets[i].link;
+                }
+            }
+
+            // Highlight contact when scrolled to the very bottom
+            if ((window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 60)) {
+                active = targets[targets.length - 1]?.link || active;
+            }
+
+            if (active) {
+                updateActiveNav(active);
+            }
+
+            // Back to top button visibility
+            if (backToTopBtn) {
+                if (window.scrollY > 400) {
+                    backToTopBtn.classList.add("visible");
+                } else {
+                    backToTopBtn.classList.remove("visible");
+                }
+            }
+
+            ticking = false;
+        });
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    setTimeout(onScroll, 150);
+}
 
 // ==========================================
 // SEARCH FUNCTIONALITY
 // ==========================================
+let searchClearTimer = null;
+let searchNoticeTimer = null;
+
 function searchWebsite() {
-    const input = document.getElementById("searchInput").value.toLowerCase().trim();
-    const dict = translations[currentLang];
-    if (!input) {
-        alert(dict.search_prompt_empty || "Please enter a search term.");
+    const inputElem = document.getElementById("searchInput");
+    const query = inputElem ? inputElem.value.toLowerCase().trim() : "";
+    const dict = translations[currentLang] || {};
+
+    clearSearchHighlights();
+
+    if (!query) {
+        showSearchNotice(dict.search_prompt_empty || "Please enter a search term.", "warning");
         return;
     }
-    const cards = document.querySelectorAll(".service-card, .department, .announcements p");
-    let found = false;
-    cards.forEach(card => {
-        const match = card.innerText.toLowerCase().includes(input);
-        card.style.display = match ? "" : "none";
-        card.style.outline = match ? "2px solid #e87820" : "none";
-        if (match) found = true;
+
+    // 1. Direct section navigation for section keywords (Contact, About, Complaints, Services, etc.)
+    const sectionKeywords = [
+        { sectionId: "contact", label: "Contact", keywords: ["contact", "phone", "mobile", "email", "address", "call", "help", "number", "సంప్రదించండి", "ఫోన్", "ఈమెయిల్", "నంబర్", "కాంటాక్ట్"] },
+        { sectionId: "complaints", label: "Raise a Problem", keywords: ["complaint", "complaints", "raise", "problem", "issue", "report", "grievance", "submit", "ఫిర్యాదు", "సమస్య", "నమోదు", "సమర్పించు"] },
+        { sectionId: "services", label: "Citizen Services", keywords: ["service", "services", "citizen services", "పౌర సేవలు", "సేవలు"] },
+        { sectionId: "departments", label: "Government Departments", keywords: ["department", "departments", "govt", "government", "శాఖలు", "ప్రభుత్వ శాఖలు", "ప్రభుత్వ"] },
+        { sectionId: "areas", label: "47th Ward Area", keywords: ["area", "areas", "ward area", "boundary", "boundaries", "east", "west", "north", "south", "దిక్కులు", "ప్రాంతం", "తూర్పు", "పడమర", "ఉత్తరం", "దక్షిణం"] },
+        { sectionId: "about", label: "About Nellore Rural", keywords: ["about", "nellore rural", "constituency", "history", "నెల్లూరు రూరల్ గురించి", "గురించి"] },
+        { sectionId: "news", label: "Announcements", keywords: ["news", "announcement", "announcements", "notice", "update", "updates", "ప్రకటనలు"] },
+        { sectionId: "home", label: "Home", keywords: ["home", "welcome", "హోమ్", "స్వాగతం"] }
+    ];
+
+    for (const item of sectionKeywords) {
+        if (item.keywords.some(k => query === k || query.includes(k) || (k.length >= 3 && k.includes(query)))) {
+            const sec = document.getElementById(item.sectionId);
+            if (sec) {
+                sec.scrollIntoView({ behavior: "smooth", block: "start" });
+                flashElement(sec);
+                showSearchNotice(`🔍 Jumped to ${item.label} section.`, "success");
+                return;
+            }
+        }
+    }
+
+    // 2. Comprehensive DOM search across all cards, services, areas, departments, and announcements
+    const targets = document.querySelectorAll(
+        ".service-card, .department, .announcements p, footer#contact p, .hero h2, .hero p, #about p, .complaint-wrap label, .complaint-wrap p"
+    );
+
+    let matchCount = 0;
+    let firstMatch = null;
+
+    targets.forEach(elem => {
+        const text = (elem.innerText || elem.textContent || "").toLowerCase();
+        if (text.includes(query)) {
+            matchCount++;
+            elem.classList.add("search-highlight");
+            if (!firstMatch) {
+                firstMatch = elem;
+            }
+        }
     });
-    if (!found) {
-        alert(dict.search_not_found || "No matching results found.");
-        cards.forEach(card => { card.style.display = ""; card.style.outline = "none"; });
+
+    if (firstMatch) {
+        firstMatch.scrollIntoView({ behavior: "smooth", block: "center" });
+        showSearchNotice(`🔍 Found ${matchCount} matching result${matchCount > 1 ? "s" : ""} for "${inputElem.value.trim()}".`, "success");
+        clearTimeout(searchClearTimer);
+        searchClearTimer = setTimeout(clearSearchHighlights, 8000);
+    } else {
+        showSearchNotice(dict.search_not_found || "No matching results found.", "error");
     }
 }
+
+function clearSearchHighlights() {
+    document.querySelectorAll(".search-highlight, .search-flash").forEach(elem => {
+        elem.classList.remove("search-highlight", "search-flash");
+    });
+}
+
+function flashElement(elem) {
+    elem.classList.add("search-flash");
+    setTimeout(() => {
+        elem.classList.remove("search-flash");
+    }, 2500);
+}
+
+function showSearchNotice(message, type = "info") {
+    let notice = document.getElementById("searchNotice");
+    if (!notice) return;
+    notice.textContent = message;
+    notice.className = `search-notice show ${type}`;
+    clearTimeout(searchNoticeTimer);
+    searchNoticeTimer = setTimeout(() => {
+        notice.classList.re                move("show");
+    }, 4000);
+}
+
+// Clear search highlights when user clears the search input
+document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("searchInput");
+    if (searchInput) {
+        searchInput.addEventListener("input", () => {
+            if (!searchInput.value.trim()) {
+                clearSearchHighlights();
+            }
+        });
+    }
+});
 
 // ==========================================
 // COMPLAINT FORM SUBMISSION

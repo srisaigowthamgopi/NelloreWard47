@@ -357,6 +357,68 @@ body {
     color: white;
 }
 
+.btn-danger {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+.btn-delete {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.btn-delete.active {
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fca5a5;
+}
+
+.btn-delete.active:hover {
+    background: #ef4444;
+    color: #ffffff;
+    border-color: #dc2626;
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.35);
+}
+
+.btn-delete.disabled {
+    background: #f1f5f9;
+    color: #94a3b8;
+    border: 1px solid #e2e8f0;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.btn-delete.disabled:hover {
+    background: #e2e8f0;
+    color: #64748b;
+}
+
+.excel-sync-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 12px;
+}
+
 .btn-action:hover {
     opacity: 0.9;
 }
@@ -648,7 +710,7 @@ tr:hover td {
     <!-- Top Admin Bar -->
     <header class="admin-header">
         <div class="brand">
-            <span class="brand-badge">AP GOVT - WARD 47</span>
+            <span class="brand-badge">Ward 47</span>
             <div class="brand-text">
                 <h1 data-i18n="admin_heading">Nellore Rural - Grievance Management Dashboard</h1>
                 <p data-i18n="admin_subheading">47th Municipal Corporation Ward Administration</p>
@@ -750,13 +812,17 @@ tr:hover td {
             <div class="actions-right">
                 <button class="btn-action btn-refresh" onclick="loadComplaints()" data-i18n="btn_refresh">🔄 Refresh</button>
                 <button class="btn-action btn-export" onclick="exportExcel()" data-i18n="btn_export">📊 Export Excel</button>
+                <button class="btn-action btn-danger" onclick="confirmDeleteAllCompleted()" data-i18n="btn_delete_completed">🗑️ Delete Completed</button>
             </div>
         </div>
 
         <!-- Complaints Table Card -->
         <div class="table-card">
             <div class="table-header-title">
-                <h2 data-i18n="table_title">Citizen Complaints & Problem Reports</h2>
+                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                    <h2 data-i18n="table_title">Citizen Complaints & Problem Reports</h2>
+                    <span class="excel-sync-pill" data-i18n="excel_sync_label">⚡ Excel Auto-Sync: Active</span>
+                </div>
                 <span id="filteredCountNotice" style="font-size:13px; color:#64748b;"></span>
             </div>
             <div class="table-responsive">
@@ -770,6 +836,7 @@ tr:hover td {
                             <th data-i18n="th_photo">Photo</th>
                             <th data-i18n="th_status">Current Status</th>
                             <th data-i18n="th_action">Update Status</th>
+                            <th data-i18n="th_actions">Action</th>
                         </tr>
                     </thead>
                     <tbody id="complaintsTableBody">
@@ -820,7 +887,10 @@ const adminTranslations = {
         opt_all_problems: "All Problem Types",
         btn_refresh: "🔄 Refresh",
         btn_export: "📊 Export Excel",
+        btn_delete_completed: "🗑️ Delete Completed",
+        btn_delete: "Delete",
         table_title: "Citizen Complaints & Problem Reports",
+        excel_sync_label: "⚡ Excel Auto-Sync: Active",
         th_id: "ID & Date",
         th_citizen: "Citizen Details",
         th_location: "Location",
@@ -828,6 +898,7 @@ const adminTranslations = {
         th_photo: "Photo",
         th_status: "Current Status",
         th_action: "Update Status",
+        th_actions: "Action",
         empty_msg: "No complaints matching your current filters.",
         showing_filtered: "Showing {count} of {total} records",
         call: "📞 Call",
@@ -864,7 +935,10 @@ const adminTranslations = {
         opt_all_problems: "అన్ని రకాల సమస్యలు",
         btn_refresh: "🔄 రీఫ్రెష్",
         btn_export: "📊 ఎక్సెల్ ఫైల్ డౌన్‌లోడ్",
+        btn_delete_completed: "🗑️ పూర్తయినవి తొలగించు",
+        btn_delete: "తొలగించు",
         table_title: "పౌర ఫిర్యాదులు & సమస్యల జాబితా",
+        excel_sync_label: "⚡ ఎక్సెల్ ఆటో-సింక్: యాక్టివ్",
         th_id: "ఐడీ & తేదీ",
         th_citizen: "పౌరుని వివరాలు",
         th_location: "ప్రాంతం / వీధి",
@@ -872,6 +946,7 @@ const adminTranslations = {
         th_photo: "ఫోటో",
         th_status: "ప్రస్తుత స్థితి",
         th_action: "స్థితిని మార్చండి",
+        th_actions: "చర్య",
         empty_msg: "ఎలాంటి ఫిర్యాదులు లభించలేదు.",
         showing_filtered: "మొత్తం {total} లో {count} రికార్డులు చూపిస్తున్నాము",
         call: "📞 కాల్",
@@ -1341,10 +1416,172 @@ function renderTable(complaints) {
                     <option value="Rejected" ${c.status === "Rejected" ? "selected" : ""}>Rejected</option>
                 </select>
             </td>
+            <td>
+                ${(c.status || "").toLowerCase() === "completed" ? `
+                    <button type="button" class="btn-delete active" onclick="confirmDeleteComplaint('${c.complaintId}')" title="${dict.btn_delete || 'Delete'}">
+                        🗑️ ${dict.btn_delete || "Delete"}
+                    </button>
+                ` : `
+                    <button type="button" class="btn-delete disabled" onclick="confirmDeleteComplaint('${c.complaintId}', true)" title="Only completed complaints can be deleted">
+                        🗑️ ${dict.btn_delete || "Delete"}
+                    </button>
+                `}
+            </td>
         </tr>
         `;
     }).join("");
 }
+
+// ==========================================
+// COMPLAINT DELETION & EXCEL SYNC
+// ==========================================
+async function confirmDeleteComplaint(complaintId, fromDisabled = false) {
+    const item = allComplaints.find(c => c.complaintId === complaintId);
+    if (!item) return;
+
+    if ((item.status || "").toLowerCase() !== "completed" && fromDisabled) {
+        const markAndDel = confirm(
+            adminLang === "te"
+                ? `ఈ ఫిర్యాదు (${complaintId}) ప్రస్తుతం "${item.status}" స్థితిలో ఉంది. పూర్తి చేసిన ఫిర్యాదులను మాత్రమే తొలగించవచ్చు.\n\nదీనిని "Completed" గా గుర్తించి ఎక్సెల్ షీట్ నుండి తొలగించాలనుకుంటున్నారా?`
+                : `This complaint (${complaintId}) is currently "${item.status}". Only completed complaints can be deleted.\n\nWould you like to mark it as Completed and delete it from the dashboard & Excel sheet?`
+        );
+        if (!markAndDel) return;
+    } else {
+        const msg = adminLang === "te"
+            ? `మీరు నిజంగా ఫిర్యాదు ${complaintId} (${item.name || ""}) ను తొలగించాలనుకుంటున్నారా?\n\nఇది అడ్మిన్ డ్యాష్‌బోర్డ్ మరియు ఎక్సెల్ షీట్ రెండింటి నుండి శాశ్వతంగా తొలగించబడుతుంది.`
+            : `Are you sure you want to permanently delete complaint ${complaintId} (${item.name || ""})?\n\nThis will remove it from both the dashboard and the Excel sheet.`;
+        if (!confirm(msg)) return;
+    }
+
+    await deleteComplaint(complaintId);
+}
+
+async function deleteComplaint(complaintId) {
+    if (isOfflineMode) {
+        allComplaints = allComplaints.filter(c => c.complaintId !== complaintId);
+        localStorage.setItem("ward47_portal_complaints", JSON.stringify(allComplaints));
+        updateStats();
+        applyFilters();
+        showToast(
+            adminLang === "te"
+                ? `ఫిర్యాదు ${complaintId} తొలగించబడింది.`
+                : `Complaint ${complaintId} deleted successfully.`,
+            "success"
+        );
+        return;
+    }
+
+    const key = getAdminKey();
+    try {
+        const res = await fetch(`${API_BASE}/api/admin/complaints/${encodeURIComponent(complaintId)}`, {
+            method: "DELETE",
+            headers: { "x-admin-key": key }
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.message || "Failed to delete complaint");
+
+        allComplaints = allComplaints.filter(c => c.complaintId !== complaintId);
+        updateStats();
+        applyFilters();
+
+        showToast(
+            adminLang === "te"
+                ? `ఫిర్యాదు ${complaintId} తొలగించబడింది మరియు ఎక్సెల్ షీట్ నవీకరించబడింది.`
+                : `Complaint ${complaintId} deleted and Excel sheet updated.`,
+            "success"
+        );
+    } catch (err) {
+        console.error("Delete error:", err);
+        showToast(err.message || "Could not delete complaint on server.", "error");
+        loadComplaints();
+    }
+}
+
+async function confirmDeleteAllCompleted() {
+    const completedList = allComplaints.filter(c => (c.status || "").toLowerCase() === "completed");
+    const completedCount = completedList.length;
+
+    if (completedCount === 0) {
+        showToast(
+            adminLang === "te"
+                ? "తొలగించడానికి పరిష్కరించబడిన (Completed) ఫిర్యాదులు ఏవీ లేవు."
+                : "No completed complaints found to delete.",
+            "error"
+        );
+        return;
+    }
+
+    const msg = adminLang === "te"
+        ? `పరిష్కరించబడిన మొత్తం ${completedCount} ఫిర్యాదులను శాశ్వతంగా తొలగించాలనుకుంటున్నారా?\n\nఇది డ్యాష్‌బోర్డ్ మరియు ఎక్సెల్ షీట్ రెండింటి నుండి శాశ్వతంగా తొలగించబడుతుంది.`
+        : `Are you sure you want to permanently delete all ${completedCount} Completed complaints?\n\nThis will remove them from both the dashboard and the Excel sheet.`;
+
+    if (!confirm(msg)) return;
+
+    if (isOfflineMode) {
+        allComplaints = allComplaints.filter(c => (c.status || "").toLowerCase() !== "completed");
+        localStorage.setItem("ward47_portal_complaints", JSON.stringify(allComplaints));
+        updateStats();
+        applyFilters();
+        showToast(
+            adminLang === "te"
+                ? `${completedCount} పరిష్కరించబడిన ఫిర్యాదులు తొలగించబడ్డాయి.`
+                : `Deleted ${completedCount} completed complaints.`,
+            "success"
+        );
+        return;
+    }
+
+    const key = getAdminKey();
+    try {
+        const res = await fetch(`${API_BASE}/api/admin/complaints/bulk/completed`, {
+            method: "DELETE",
+            headers: { "x-admin-key": key }
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.message || "Bulk delete failed");
+
+        await loadComplaints();
+
+        showToast(
+            adminLang === "te"
+                ? `${completedCount} పరిష్కరించబడిన ఫిర్యాదులు తొలగించబడ్డాయి మరియు ఎక్సెల్ షీట్ నవీకరించబడింది.`
+                : `${completedCount} completed complaints deleted and Excel sheet updated.`,
+            "success"
+        );
+    } catch (err) {
+        console.error("Bulk delete error:", err);
+        showToast(err.message || "Could not delete completed complaints.", "error");
+        loadComplaints();
+    }
+}
+
+// Auto-refresh silent poller: checks for new complaints every 15s and on window focus
+async function silentCheckForNewComplaints() {
+    const adminApp = document.getElementById("adminApp");
+    if (!adminApp || adminApp.style.display === "none" || document.hidden || isOfflineMode) return;
+    const key = getAdminKey();
+    if (!key) return;
+
+    try {
+        const res = await fetch(`${API_BASE}/api/admin/complaints`, {
+            headers: { "x-admin-key": key }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            const fresh = data.complaints || [];
+            if (fresh.length !== allComplaints.length || JSON.stringify(fresh) !== JSON.stringify(allComplaints)) {
+                allComplaints = fresh;
+                updateStats();
+                applyFilters();
+            }
+        }
+    } catch (_) {}
+}
+
+setInterval(silentCheckForNewComplaints, 15000);
+window.addEventListener("focus", silentCheckForNewComplaints);
 
 // ==========================================
 // STATUS UPDATE

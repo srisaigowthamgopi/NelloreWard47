@@ -21,7 +21,7 @@ fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 // Enable CORS for frontend development (e.g. VS Code Live Server at 127.0.0.1:5500)
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, OPTIONS");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Content-Type, x-admin-key");
   if (req.method === "OPTIONS") return res.sendStatus(200);
   next();
@@ -83,6 +83,31 @@ async function getWorkbook() {
   return { workbook, worksheet };
 }
 
+function getNextComplaintId(worksheet) {
+  let maxIdNum = 0;
+  worksheet.eachRow((row, rowNumber) => {
+    if (rowNumber === 1) return;
+    const val = String(row.getCell(1).value || "");
+    const match = val.match(/W47-(\d+)/i);
+    if (match) {
+      const n = parseInt(match[1], 10);
+      if (n > maxIdNum) maxIdNum = n;
+    }
+  });
+
+  const counterFile = path.join(DATA_DIR, ".id_counter");
+  let lastCounter = 0;
+  if (fs.existsSync(counterFile)) {
+    try {
+      lastCounter = parseInt(fs.readFileSync(counterFile, "utf8").trim(), 10) || 0;
+    } catch (_) {}
+  }
+
+  const nextNum = Math.max(maxIdNum, lastCounter) + 1;
+  fs.writeFileSync(counterFile, String(nextNum), "utf8");
+  return `W47-${String(nextNum).padStart(5, "0")}`;
+}
+
 app.post("/api/complaints", upload.single("photo"), async (req, res) => {
   try {
     const { name, mobile, area, street, problemType, description } = req.body;
@@ -100,8 +125,8 @@ app.post("/api/complaints", upload.single("photo"), async (req, res) => {
     }
 
     const { workbook, worksheet } = await getWorkbook();
-    const complaintId = `W47-${String(worksheet.rowCount).padStart(5, "0")}`;
-    worksheet.addRow({
+    const complaintId = getNextComplaintId(worksheet);
+    const newRow = worksheet.addRow({
       complaintId,
       submittedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
       name: safeExcelText(name),
@@ -113,6 +138,7 @@ app.post("/api/complaints", upload.single("photo"), async (req, res) => {
       photoFilename: req.file ? req.file.filename : "",
       status: "Received"
     });
+    newRow.alignment = { vertical: "middle" };
     await workbook.xlsx.writeFile(EXCEL_FILE);
     return res.status(201).json({ message: "Complaint stored.", complaintId });
   } catch (error) {
@@ -238,10 +264,110 @@ app.patch("/api/admin/complaints/:complaintId", requireAdmin, async (req, res) =
     if (!targetRow) return res.status(404).json({ message: "Complaint not found." });
     targetRow.getCell(10).value = status;
     await workbook.xlsx.writeFile(EXCEL_FILE);
-    res.json({ message: "Status updated.", complaintId: req.params.complaintId, status });
+    res.json({ message: "Status updated in Excel sheet.", complaintId: req.params.complaintId, status });
   } catch (error) {
     console.error("Admin status update error:", error);
     res.status(500).json({ message: "Could not update complaint status." });
+  }
+});
+
+// Bulk delete all Completed complaints and update Excel sheet
+app.delete("/api/admin/complaints/bulk/completed", requireAdmin, async (_req, res) => {
+  try {
+    if (!fs.existsSync(EXCEL_FILE)) {
+      return res.status(404).json({ message: "No complaints found to delete." });
+    }
+
+    const { workbook, worksheet } = await getWorkbook();
+    const rowsToDelete = [];
+
+    worksheet.eachRow((row, rowNumber) => {
+      if (rowNumber > 1) {
+        const status = String(row.getCell(10).value || "").trim().toLowerCase();
+        if (status === "completed") {
+          rowsToDelete.push({
+            rowNumber,
+            complaintId: String(row.getCell(1).value || ""),
+            photoFilename: String(row.getCell(9).value || "")
+          });
+        }
+      }
+    });
+
+    if (rowsToDelete.length === 0) {
+      return res.json({ success: true, message: "No completed complaints found to delete.", count: 0 });
+    }
+
+    // Delete associated photo files from disk
+    rowsToDelete.forEach(item => {
+      if (item.photoFilename) {
+        const photoPath = path.join(UPLOAD_DIR, item.photoFilename);
+        if (fs.existsSync(photoPath)) {
+          fs.unlink(photoPath, () => {});
+        }
+      }
+    });
+
+    // Delete rows from bottom to top so row numbers don't shift
+    rowsToDelete.sort((a, b) => b.rowNumber - a.rowNumber);
+    rowsToDelete.forEach(item => {
+      worksheet.spliceRows(item.rowNumber, 1);
+    });
+
+    await workbook.xlsx.writeFile(EXCEL_FILE);
+    console.log(`Deleted ${rowsToDelete.length} completed complaints from Excel sheet.`);
+
+    return res.json({
+      success: true,
+      message: `${rowsToDelete.length} completed complaints deleted and Excel sheet updated.`,
+      count: rowsToDelete.length
+    });
+  } catch (error) {
+    console.error("Bulk delete completed complaints error:", error);
+    return res.status(500).json({ message: "Could not delete completed complaints from Excel sheet." });
+  }
+});
+
+// Delete a single complaint by ID and update Excel sheet
+app.delete("/api/admin/complaints/:complaintId", requireAdmin, async (req, res) => {
+  try {
+    const { complaintId } = req.params;
+    if (!fs.existsSync(EXCEL_FILE)) {
+      return res.status(404).json({ message: "No complaints found." });
+    }
+
+    const { workbook, worksheet } = await getWorkbook();
+    let targetRowNumber = -1;
+    let photoFilename = "";
+
+    worksheet.eachRow((row, rowNumber) => {
+      if (rowNumber > 1 && String(row.getCell(1).value || "").trim() === complaintId.trim()) {
+        targetRowNumber = rowNumber;
+        photoFilename = String(row.getCell(9).value || "");
+      }
+    });
+
+    if (targetRowNumber === -1) {
+      return res.status(404).json({ message: "Complaint not found." });
+    }
+
+    // Delete associated photo file if present
+    if (photoFilename) {
+      const photoPath = path.join(UPLOAD_DIR, photoFilename);
+      if (fs.existsSync(photoPath)) {
+        fs.unlink(photoPath, () => {});
+      }
+    }
+
+    // Remove row from worksheet and rewrite Excel
+    worksheet.spliceRows(targetRowNumber, 1);
+    await workbook.xlsx.writeFile(EXCEL_FILE);
+
+    console.log(`Complaint ${complaintId} deleted from Excel sheet.`);
+    return res.json({ success: true, message: "Complaint deleted and Excel sheet updated.", complaintId });
+  } catch (error) {
+    console.error("Delete complaint error:", error);
+    return res.status(500).json({ message: "Could not delete complaint from Excel sheet." });
   }
 });
 
